@@ -1,0 +1,9 @@
+components:
+  schemas:
+    ErrorDto:
+      properties:
+        message:
+          type: string
+        date:
+          type: string
+          format: date-time

@@ -1,0 +1,127 @@
+team:
+  get:
+    tags:
+      - team
+    summary: Get all teams
+    description: get all shots
+    operationId: getTeams
+    responses:
+      200:
+        description: successful operation
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../model/team.model.yml#/components/schemas/TeamDto'
+      404:
+        description: Not exists teams
+        content: { }
+      405:
+        description: Validation exception
+        content: { }
+    x-codegen-request-body-name: body
+  post:
+    tags:
+      - team
+    summary: Create team
+    description: Create team functionality
+    operationId: createTeam
+    requestBody:
+      description: Created team object
+      content:
+        application/json:
+          schema:
+            $ref: '../model/team.model.yml#/components/schemas/TeamDto'
+      required: true
+    responses:
+      200:
+        description: successful operation
+        content:
+          application/json:
+            schema:
+              $ref: '../model/team.model.yml#/components/schemas/TeamDto'
+      400:
+        description: Invalid ID supplied
+        content: { }
+      404:
+        description: Team not found
+        content: { }
+      405:
+        description: Validation exception
+        content: { }
+    x-codegen-request-body-name: body
+
+  put:
+    tags:
+      - team
+    summary: Updated team
+    description: This can only be done by the logged in team.
+    operationId: updateTeam
+    requestBody:
+      description: TeamDto object that needs to be updated
+      content:
+        application/json:
+          schema:
+            $ref: '../model/team.model.yml#/components/schemas/TeamDto'
+      required: true
+    responses:
+      200:
+        description: successful operation
+        content:
+          application/json:
+            schema:
+              $ref: '../model/team.model.yml#/components/schemas/TeamDto'
+      400:
+        description: Invalid shot supplied
+        content: { }
+      404:
+        description: Team not found
+        content: { }
+    x-codegen-request-body-name: body
+team-teamId:
+  get:
+    tags:
+      - team
+    summary: Get team by team id
+    operationId: getTeamById
+    parameters:
+      - name: teamId
+        in: path
+        description: 'The id that needs to be fetched. '
+        required: true
+        schema:
+          type: integer
+    responses:
+      200:
+        description: successful operation
+        content:
+          application/json:
+            schema:
+              $ref: '../model/team.model.yml#/components/schemas/TeamDto'
+      404:
+        description: Team not found
+        content: { }
+  delete:
+    tags:
+      - team
+    summary: Delete team
+    description: This can only be done by the logged in team.
+    operationId: deleteTeam
+    parameters:
+      - name: teamId
+        in: path
+        description: The id that needs to be deleted
+        required: true
+        schema:
+          type: integer
+    responses:
+      200:
+        description: operation successful
+        content: { }
+      400:
+        description: Invalid id supplied
+        content: { }
+      404:
+        description: Team not found
+        content: { }

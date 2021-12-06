@@ -1,0 +1,127 @@
+match:
+  get:
+    tags:
+      - match
+    summary: Get all matchs
+    description: get all matchs
+    operationId: getMatchs
+    responses:
+      200:
+        description: successful operation
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../model/match.model.yml#/components/schemas/MatchDto'
+      404:
+        description: Not exists matchs
+        content: { }
+      405:
+        description: Validation exception
+        content: { }
+    x-codegen-request-body-name: body
+  post:
+    tags:
+      - match
+    summary: Create match
+    description: Create match functionality
+    operationId: createMatch
+    requestBody:
+      description: Created match object
+      content:
+        application/json:
+          schema:
+            $ref: '../model/match.model.yml#/components/schemas/MatchDto'
+      required: true
+    responses:
+      200:
+        description: successful operation
+        content:
+          application/json:
+            schema:
+              $ref: '../model/match.model.yml#/components/schemas/MatchDto'
+      400:
+        description: Invalid ID supplied
+        content: { }
+      404:
+        description: Match not found
+        content: { }
+      405:
+        description: Validation exception
+        content: { }
+    x-codegen-request-body-name: body
+
+  put:
+    tags:
+      - match
+    summary: Updated match
+    description: This can only be done by the logged in match.
+    operationId: updateMatch
+    requestBody:
+      description: MatchDto object that needs to be updated
+      content:
+        application/json:
+          schema:
+            $ref: '../model/match.model.yml#/components/schemas/MatchDto'
+      required: true
+    responses:
+      200:
+        description: successful operation
+        content:
+          application/json:
+            schema:
+              $ref: '../model/match.model.yml#/components/schemas/MatchDto'
+      400:
+        description: Invalid shot supplied
+        content: { }
+      404:
+        description: Match not found
+        content: { }
+    x-codegen-request-body-name: body
+match-matchId:
+  get:
+    tags:
+      - match
+    summary: Get match by match id
+    operationId: getMatchById
+    parameters:
+      - name: MatchId
+        in: path
+        description: 'The id that needs to be fetched. '
+        required: true
+        schema:
+          type: integer
+    responses:
+      200:
+        description: successful operation
+        content:
+          application/json:
+            schema:
+              $ref: '../model/match.model.yml#/components/schemas/MatchDto'
+      404:
+        description: Match not found
+        content: { }
+  delete:
+    tags:
+      - match
+    summary: Delete match
+    description: This can only be done by the logged in match.
+    operationId: deleteMatch
+    parameters:
+      - name: MatchId
+        in: path
+        description: The id that needs to be deleted
+        required: true
+        schema:
+          type: integer
+    responses:
+      200:
+        description: operation successful
+        content: { }
+      400:
+        description: Invalid id supplied
+        content: { }
+      404:
+        description: Match not found
+        content: { }

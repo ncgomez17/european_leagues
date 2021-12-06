@@ -1,0 +1,127 @@
+incident:
+  get:
+    tags:
+      - incident
+    summary: Get all incidents
+    description: get all incidents
+    operationId: getIncidents
+    responses:
+      200:
+        description: successful operation
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../model/incident.model.yml#/components/schemas/IncidentDto'
+      404:
+        description: Not exists incidents
+        content: { }
+      405:
+        description: Validation exception
+        content: { }
+    x-codegen-request-body-name: body
+  post:
+    tags:
+      - incident
+    summary: Create incident
+    description: Create incident functionality
+    operationId: createIncident
+    requestBody:
+      description: Created incident object
+      content:
+        application/json:
+          schema:
+            $ref: '../model/incident.model.yml#/components/schemas/IncidentDto'
+      required: true
+    responses:
+      200:
+        description: successful operation
+        content:
+          application/json:
+            schema:
+              $ref: '../model/incident.model.yml#/components/schemas/IncidentDto'
+      400:
+        description: Invalid ID supplied
+        content: { }
+      404:
+        description: Incident not found
+        content: { }
+      405:
+        description: Validation exception
+        content: { }
+    x-codegen-request-body-name: body
+
+  put:
+    tags:
+      - incident
+    summary: Updated incident
+    description: This can only be done by the logged in incident.
+    operationId: updateIncident
+    requestBody:
+      description: IncidentDto object that needs to be updated
+      content:
+        application/json:
+          schema:
+            $ref: '../model/incident.model.yml#/components/schemas/IncidentDto'
+      required: true
+    responses:
+      200:
+        description: successful operation
+        content:
+          application/json:
+            schema:
+              $ref: '../model/incident.model.yml#/components/schemas/IncidentDto'
+      400:
+        description: Invalid shot supplied
+        content: { }
+      404:
+        description: Incident not found
+        content: { }
+    x-codegen-request-body-name: body
+incident-incidentId:
+  get:
+    tags:
+      - incident
+    summary: Get incident by incident id
+    operationId: getIncidentById
+    parameters:
+      - name: incidentId
+        in: path
+        description: 'The id that needs to be fetched. '
+        required: true
+        schema:
+          type: integer
+    responses:
+      200:
+        description: successful operation
+        content:
+          application/json:
+            schema:
+              $ref: '../model/incident.model.yml#/components/schemas/IncidentDto'
+      404:
+        description: Incident not found
+        content: { }
+  delete:
+    tags:
+      - incident
+    summary: Delete incident
+    description: This can only be done by the logged in incident.
+    operationId: deleteIncident
+    parameters:
+      - name: incidentId
+        in: path
+        description: The id that needs to be deleted
+        required: true
+        schema:
+          type: integer
+    responses:
+      200:
+        description: operation successful
+        content: { }
+      400:
+        description: Invalid id supplied
+        content: { }
+      404:
+        description: Incident not found
+        content: { }

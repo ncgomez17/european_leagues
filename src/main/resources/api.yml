@@ -1,0 +1,69 @@
+openapi: 3.0.3
+info:
+  title: European Leagues
+  version: 0.0.1
+  description: Simple spring boot api for European Leagues
+  contact:
+    name: Nicolas Cid Gómez
+    url: https://github.com/ncgomez17
+    email: nico9cid@gmail.com
+servers:
+  - url: http://localhost:8080
+    description: Sample project running locally
+externalDocs:
+  description: GitHub project for the code and information about this API
+  url: https://github.com/ncgomez17
+
+paths:
+  /shot:
+    $ref: 'openapi/api/shot.api.yml#/shot'
+
+  /shot/{shotId}:
+    $ref: 'openapi/api/shot.api.yml#/shot-shotId'
+
+  /match:
+    $ref: 'openapi/api/match.api.yml#/match'
+
+  /match/{matchId}:
+    $ref: 'openapi/api/match.api.yml#/match-matchId'
+
+  /incident:
+    $ref: 'openapi/api/incident.api.yml#/incident'
+
+  /incident/:
+    $ref: 'openapi/api/incident.api.yml#/incident-incidentId'
+
+  /team:
+    $ref: 'openapi/api/team.api.yml#/team'
+
+  /team/{teamId}:
+    $ref: 'openapi/api/team.api.yml#/team-teamId'
+
+  /player:
+    $ref: 'openapi/api/player.api.yml#/player'
+
+  /player/{playerId}:
+    $ref: 'openapi/api/player.api.yml#/player-playerId'
+
+
+
+
+components:
+  schemas:
+    shotDto:
+      $ref: 'openapi/model/shot.model.yml#/components/schemas/ShotDto'
+
+    matchDto:
+      $ref: 'openapi/model/match.model.yml#/components/schemas/MatchDto'
+
+    incidentDto:
+      $ref: 'openapi/model/incident.model.yml#/components/schemas/IncidentDto'
+
+    teamDto:
+      $ref: 'openapi/model/team.model.yml#/components/schemas/TeamDto'
+
+    playerDto:
+      $ref: 'openapi/model/player.model.yml#/components/schemas/PlayerDto'
+
+    ErrorDto:
+      $ref: 'openapi/model/error.model.yml#/components/schemas/ErrorDto'

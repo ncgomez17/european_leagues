@@ -1,0 +1,127 @@
+player:
+  get:
+    tags:
+      - player
+    summary: Get all players
+    description: get all players
+    operationId: getPlayers
+    responses:
+      200:
+        description: successful operation
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../model/player.model.yml#/components/schemas/PlayerDto'
+      404:
+        description: Not exists players
+        content: { }
+      405:
+        description: Validation exception
+        content: { }
+    x-codegen-request-body-name: body
+  post:
+    tags:
+      - player
+    summary: Create player
+    description: Create player functionality
+    operationId: createPlayer
+    requestBody:
+      description: Created player object
+      content:
+        application/json:
+          schema:
+            $ref: '../model/player.model.yml#/components/schemas/PlayerDto'
+      required: true
+    responses:
+      200:
+        description: successful operation
+        content:
+          application/json:
+            schema:
+              $ref: '../model/player.model.yml#/components/schemas/PlayerDto'
+      400:
+        description: Invalid ID supplied
+        content: { }
+      404:
+        description: Player not found
+        content: { }
+      405:
+        description: Validation exception
+        content: { }
+    x-codegen-request-body-name: body
+
+  put:
+    tags:
+      - player
+    summary: Updated player
+    description: This can only be done by the logged in player.
+    operationId: updatePlayer
+    requestBody:
+      description: PlayerDto object that needs to be updated
+      content:
+        application/json:
+          schema:
+            $ref: '../model/player.model.yml#/components/schemas/PlayerDto'
+      required: true
+    responses:
+      200:
+        description: successful operation
+        content:
+          application/json:
+            schema:
+              $ref: '../model/player.model.yml#/components/schemas/PlayerDto'
+      400:
+        description: Invalid player supplied
+        content: { }
+      404:
+        description: Player not found
+        content: { }
+    x-codegen-request-body-name: body
+player-playerId:
+  get:
+    tags:
+      - player
+    summary: Get player by player id
+    operationId: getPlayerById
+    parameters:
+      - name: playerId
+        in: path
+        description: 'The id that needs to be fetched. '
+        required: true
+        schema:
+          type: integer
+    responses:
+      200:
+        description: successful operation
+        content:
+          application/json:
+            schema:
+              $ref: '../model/player.model.yml#/components/schemas/PlayerDto'
+      404:
+        description: Player not found
+        content: { }
+  delete:
+    tags:
+      - player
+    summary: Delete player
+    description: This can only be done by the logged in player.
+    operationId: deletePlayer
+    parameters:
+      - name: playerId
+        in: path
+        description: The id that needs to be deleted
+        required: true
+        schema:
+          type: integer
+    responses:
+      200:
+        description: operation successful
+        content: { }
+      400:
+        description: Invalid id supplied
+        content: { }
+      404:
+        description: Player not found
+        content: { }

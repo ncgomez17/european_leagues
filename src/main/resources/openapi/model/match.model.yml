@@ -1,0 +1,22 @@
+components:
+  schemas:
+    MatchDto:
+      properties:
+        id:
+          type: integer
+          format: int32
+        dateMatch:
+          type: string
+          format: date
+        goalsHomeTeam:
+          type: integer
+          format: int32
+        goalsVisitorTeam:
+          type: integer
+          format: int32
+        homeTeam:
+          type: object
+          $ref: "team.model.yml#/components/schemas/TeamDto"
+        visitorTeam:
+          type: object
+          $ref: "team.model.yml#/components/schemas/TeamDto"

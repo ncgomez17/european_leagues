@@ -1,0 +1,18 @@
+components:
+  schemas:
+    TeamDto:
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        numberOfPlayers:
+          type: integer
+          format: int32
+        league:
+          type: string
+        players:
+          type: array
+          items:
+            $ref: "player.model.yml#/components/schemas/PlayerDto"
