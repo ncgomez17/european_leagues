@@ -1,33 +1,30 @@
-import clienteREST from "./clienteREST";
+import clientREST from "./clientREST";
 
-class ClientesService {
-  buscarTodos() {
-    return clienteREST.get("/clientes");
+  const getAllTeams = () => {
+    return clientREST.get("/team");
   }
 
-  buscarPorDNI(dni) {
-    return clienteREST.get(`/clientes/${dni}`);
+  const getTeam = (id) => {
+    return clientREST.get(`/team/${id}`);
   }
 
-  crear(data) {
-    return clienteREST.post("/clientes", data);
+  const createTeam = (teamDto) => {
+    return clientREST.post("/team", teamDto);
   }
 
-  modificar(dni, data) {
-    return clienteREST.put(`/clientes/${dni}`, data);
+  const updateTeam = (teamDto) => {
+    return clientREST.put("/team", teamDto);
   }
 
-  eliminar(dni) {
-    return clienteREST.delete(`/clientes/${dni}`);
+  const deleteTeam = (id) => {
+    return clientREST.delete(`/team/${id}`);
   }
 
-  buscarPorNombre(nombre) {
-    return clienteREST.get(`/clientes?nombre=${nombre}`);
-  }
-
-  buscarPorLocalidad(localidad) {
-    return clienteREST.get(`/clientes?localidad=${localidad}`);
-  }
+/* eslint import/no-anonymous-default-export: [2, {"allowObject": true}] */
+export default {
+  getAllTeams,
+  getTeam,
+  createTeam,
+  updateTeam,
+  deleteTeam
 }
-
-export default new ClientesService();
