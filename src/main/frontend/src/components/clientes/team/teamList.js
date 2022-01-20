@@ -9,7 +9,7 @@ import { Dialog } from 'primereact/dialog';
 
 import { useNavigate } from 'react-router';
 
-import teamService from '../../services/teamService';
+import teamService from '../../../services/teamService';
 
 export default function TeamList(props) {
 
@@ -44,6 +44,8 @@ export default function TeamList(props) {
 
     function deleteTeam() {
         teamService.deleteTeam(team.id);
+        teamService.getAllTeams().then(res => {
+            setTeams(res.data);});        
         hideDialog();
     }
 

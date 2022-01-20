@@ -9,7 +9,7 @@ import { Dialog } from 'primereact/dialog';
 
 import { useNavigate } from 'react-router';
 
-import matchService from '../../services/matchService';
+import matchService from '../../../services/matchService';
 
 export default function MatchList(props) {
 
@@ -22,7 +22,7 @@ export default function MatchList(props) {
 
 
     useEffect(() => {
-        matchService.getAllTeams().then(res => {
+        matchService.getAllMatchs().then(res => {
             setMatchs(res.data);
             setLoading(false);
         });
@@ -70,7 +70,7 @@ export default function MatchList(props) {
     );
     return (
         <div>
-            <div className="text-3xl text-800 font-bold mb-4">List of teams</div>
+            <div className="text-3xl text-800 font-bold mb-4">List of matchs</div>
 
             
             {loading && <div> <ProgressSpinner /> Loading... </div>}

@@ -4,10 +4,11 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Divider } from 'primereact/divider';
 import { classNames } from 'primereact/utils';
+import { Dropdown } from 'primereact/dropdown';
 
 import { useParams, useNavigate } from "react-router-dom";
 
-import teamService from '../../services/teamService';
+import teamService from '../../../services/teamService';
 
 export default function DetailTeam() {
 
@@ -18,6 +19,7 @@ export default function DetailTeam() {
     const emptyTeam = { name: "", numberOfPlayers: "", league: ""}
     const [team, setTeam] = useState(emptyTeam);
     const [submitted, setSubmitted] = useState(false);
+    const nameLeagues =["Premier League","LaLiga","Serie A","Bundesliga","Ligue 1","Primera División Portuguesa"]
 
 
     useEffect(() => {
@@ -31,6 +33,12 @@ export default function DetailTeam() {
         const val = (e.target && e.target.value) || '';
         let _team = { ...team };
         _team[`${name}`] = val;
+        setTeam(_team);
+    }
+
+    function onLeagueChange(e) {
+        let _team = { ...team };
+        _team.league = e.value;
         setTeam(_team);
     }
 
@@ -62,24 +70,27 @@ export default function DetailTeam() {
                 {isNew && <span className="text-900 text-2xl font-medium mb-4 block">New Team</span>}
 
                 <form onSubmit={handleSubmit} >
-                    <div className="p-fluid">
-                        <div className="p-field">
-                            <label htmlFor="name" >Name</label>
+                    <div className="field grid">
+                            <label htmlFor="name"className='col-fixed' >Name</label>
+                            <div className="col">
                             <InputText id="name" value={team.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && !team.name })} />
                             {submitted && !team.name && <small className="p-error">A name must be indicated.</small>}
                         </div>
-
-                        <div className="p-field">
-                            <label htmlFor="numberOfPlayers">NumberOfPlayers</label>
+                    </div>
+                        <div className="field grid">
+                            <label htmlFor="numberOfPlayers"className='col-fixed'>NumberOfPlayers</label>
+                            <div class="col">
                             <InputText id="numberOfPlayers" value={team.numberOfPlayers} onChange={(e) => onInputChange(e, 'numberOfPlayers')} required className={classNames({ 'p-invalid': submitted && !team.numberOfPlayers })} />
                             {submitted && !team.numberOfPlayers && <small className="p-error"> Number of players must be indicated.</small>}
-                        </div>
-
-                        <div className="p-field">
-                            <label htmlFor="league">League</label>
-                            <InputText id="league" value={team.league} onChange={(e) => onInputChange(e, 'league')} />
-                        </div>
+                            </div>
                     </div>
+                        <div className="field grid">
+                            <label htmlFor="leagues"className='col-fixed'>League</label>
+                            <div className='col'>
+                            <Dropdown id="leagues"value={team.league} options={nameLeagues} onChange={onLeagueChange}
+                                filter showClear filterBy="league" placeholder="Select league" />
+                            </div>
+                        </div>
 
                     <Divider />
 

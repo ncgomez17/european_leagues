@@ -8,7 +8,7 @@ import { classNames } from 'primereact/utils';
 
 import { useParams, useNavigate } from "react-router-dom";
 
-import matchService from '../../services/matchService';
+import matchService from '../../../services/matchService';
 
 //retocar (atributos que dependen de otras tablas)
 export default function DetailMatch() {

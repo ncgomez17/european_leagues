@@ -9,7 +9,7 @@ import { Dialog } from 'primereact/dialog';
 
 import { useNavigate } from 'react-router';
 
-import playerService from '../../services/playerService';
+import playerService from '../../../services/playerService';
 
 export default function PlayerList(props) {
 
@@ -70,7 +70,7 @@ export default function PlayerList(props) {
     );
     return (
         <div>
-            <div className="text-3xl text-800 font-bold mb-4">List of shots</div>
+            <div className="text-3xl text-800 font-bold mb-4">List of players</div>
 
             
             {loading && <div> <ProgressSpinner /> Loading... </div>}

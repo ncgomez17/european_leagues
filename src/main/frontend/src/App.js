@@ -6,8 +6,16 @@ import {
 } from "react-router-dom";
 
 import Home from './components/home'
-import TeamList from "./components/clientes/teamList";
-import DetailTeam from "./components/clientes/detailTeam";
+import TeamList from "./components/clientes/team/teamList";
+import DetailTeam from "./components/clientes/team/detailTeam";
+import PlayerList from "./components/clientes/player/playerList";
+import DetailPlayer from "./components/clientes/player/detailPlayer";
+import IncidentList from "./components/clientes/incident/incidentList";
+import DetailIncident from "./components/clientes/incident/detailIncident";
+import MatchList from "./components/clientes/match/matchList";
+import DetailMatch from "./components/clientes/match/detailMatch";
+import ShotList from "./components/clientes/shot/shotList";
+import DetailShot from "./components/clientes/shot/detailShot";
 
 import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
@@ -40,23 +48,27 @@ function App() {
             </Route>
 
             <Route path="players" >
-              <Route index element={<Home mensaje="View of players <pending>" />} />
-              <Route path=":id" element={<Home mensaje="View of players <pending>" />} />
+              <Route index element={<PlayerList/>} />
+              <Route path="new" element={<DetailPlayer/>} />
+              <Route path=":id" element={<DetailPlayer/>} />
             </Route>
 
             <Route path="incidents" >
-              <Route index element={<Home mensaje="View of incidents <pending>" />} />
-              <Route path=":id" element={<Home mensaje="View of incidents <pending>" />} />
+              <Route index element={<IncidentList/>} />
+              <Route path="new" element={<DetailIncident/>} />
+              <Route path=":id" element={<DetailIncident/>} />
             </Route>
 
             <Route path="matchs" >
-              <Route index element={<Home mensaje="View of matchs <pending>" />} />
-              <Route path=":id" element={<Home mensaje="View of matchs <pending>" />} />
+              <Route index element={<MatchList/>} />
+              <Route path="new" element={<DetailMatch/>} />
+              <Route path=":id" element={<DetailMatch/>} />
             </Route>
 
             <Route path="shots" >
-              <Route index element={<Home mensaje="View of shots <pending>" />} />
-              <Route path=":id" element={<Home mensaje="View of shots <pending>" />} />
+            <Route index element={<ShotList/>} />
+              <Route path="new" element={<DetailShot/>} />
+              <Route path=":id" element={<DetailShot/>} />
             </Route>
 
           </Routes>

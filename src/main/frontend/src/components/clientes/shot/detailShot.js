@@ -8,7 +8,7 @@ import { classNames } from 'primereact/utils';
 
 import { useParams, useNavigate } from "react-router-dom";
 
-import shotService from '../../services/shotService';
+import shotService from '../../../services/shotService';
 
 //retocar (atributos que dependen de otras tablas)
 export default function DetailShot() {
@@ -64,27 +64,33 @@ export default function DetailShot() {
                 {isNew && <span className="text-900 text-2xl font-medium mb-4 block">New Shot</span>}
 
                 <form onSubmit={handleSubmit} >
-                    <div className="p-fluid">
-                        <div className="p-field">
-                            <label htmlFor="minute" >minute</label>
+                    <div className="field grid" >
+                            <label htmlFor="minute" className='col-fixed' >minute</label>
+                            <div className="col">
                             <InputNumber id="minute" value={shot.minute} onChange={(e) => onInputChange(e, 'minute')} required autoFocus className={classNames({ 'p-invalid': submitted && !shot.minute })} />
                             {submitted && !shot.minute && <small className="p-error">Minute must be indicated.</small>}
-                        </div>
+                            </div>
 
-                        <div className="p-field">
-                            <label htmlFor="result">Result</label>
+                        <div className="field grid">
+                            <label htmlFor="result" className='col-fixed'>Result</label>
+                            <div className='col'>
                             <InputText id="result" value={shot.result} onChange={(e) => onInputChange(e, 'result')} required className={classNames({ 'p-invalid': submitted && !shot.result })} />
                             {submitted && !shot.result && <small className="p-error"> Result must be indicated.</small>}
+                            </div>
                         </div>
 
-                        <div className="p-field">
-                            <label htmlFor="league">Site</label>
+                        <div className="field grid">
+                            <label htmlFor="league" className='col-fixed'>Site</label>
+                            <div className='col'>
                             <InputText id="league" value={shot.site} onChange={(e) => onInputChange(e, 'site')} />
+                            </div>
                         </div>
 
-                        <div className="p-field">
-                            <label htmlFor="player">Player</label>
+                        <div className="field grid">
+                            <label htmlFor="player" className='col-fixed'>Player</label>
+                            <div className='col'>
                             <InputText id="player" value={shot.player} onChange={(e) => onInputChange(e, 'player')} />
+                            </div>
                         </div>
                     </div>
 

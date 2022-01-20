@@ -9,54 +9,54 @@ import { Dialog } from 'primereact/dialog';
 
 import { useNavigate } from 'react-router';
 
-import shotService from '../../services/shotService';
+import incidentService from '../../../services/incidentService';
 
-export default function ShotList(props) {
+export default function IncidentList(props) {
 
-    const [shots, setShots] = useState(null);
+    const [incidents, setIncidents] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [shot, setShot] = useState(null);
+    const [incident, setIncident] = useState(null);
     const [dialog, setDialog] = useState(false);
 
     let navigate = useNavigate();
 
 
     useEffect(() => {
-        shotService.getAllShots().then(res => {
-            setShots(res.data);
+        incidentService.getAllIncidents().then(res => {
+            setIncidents(res.data);
             setLoading(false);
         });
     }, [dialog]);
 
 
-    function newShot() {
+    function newIncident() {
         navigate("new"); 
     }
 
-    function editShot(shot) {
-        navigate(shot.id); 
+    function editIncident(incident) {
+        navigate(incident.id); 
     }
 
-    function confirmDeleteShot(shot) {
-        setShot(shot);
+    function confirmDeleteIncident(incident) {
+        setIncident(incident);
         setDialog(true);
     }
 
-    function deleteShot() {
-        shotService.deleteShot(shot.id);
+    function deleteIncident() {
+        incidentService.deleteIncident(incident.id);
         hideDialog();
     }
 
     function hideDialog() {
-        setShot(null);
+        setIncident(null);
         setDialog(false);
     }
 
-    function actionsShot(rowData) {
+    function actionsIncident(rowData) {
         return (
             <React.Fragment>
-                <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" onClick={() => editShot(rowData)} />
-                <Button icon="pi pi-trash" className="p-button-rounded p-button-danger" onClick={() => confirmDeleteShot(rowData)} />
+                <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" onClick={() => editIncident(rowData)} />
+                <Button icon="pi pi-trash" className="p-button-rounded p-button-danger" onClick={() => confirmDeleteIncident(rowData)} />
             </React.Fragment>
         );
     }
@@ -64,8 +64,8 @@ export default function ShotList(props) {
 
     const footDialogDeleted = (
         <React.Fragment>
-            <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDialog} tooltip="Delete shot" />
-            <Button label="si" icon="pi pi-check" className="p-button-text" onClick={deleteShot} tooltip="Edit shot"/>
+            <Button label="No" icon="pi pi-times" className="p-button-text" onClick={hideDialog} tooltip="Delete incident" />
+            <Button label="si" icon="pi pi-check" className="p-button-text" onClick={deleteIncident} tooltip="Edit incident"/>
         </React.Fragment>
     );
     return (
@@ -76,17 +76,15 @@ export default function ShotList(props) {
             {loading && <div> <ProgressSpinner /> Loading... </div>}
 
             <div className="mt-3 md:mt-0 flex justify-content-end">
-                <Button label="New shot" icon="pi pi-plus" className="p-button-lg" onClick={newShot} tooltip="Create new shot" tooltipOptions={{position: 'bottom'}} />
+                <Button label="New incident" icon="pi pi-plus" className="p-button-lg" onClick={newIncident} tooltip="Create new incident" tooltipOptions={{position: 'bottom'}} />
             </div>
 
             <div className="surface-card p-4 border-round shadow-2">
-                <DataTable value={shots} responsiveLayout="scroll">
-                    <Column field="minute" header="Minute"></Column>
-                    <Column field="result" header="Result"></Column>
-                    <Column field="site" header="Site"/>
+                <DataTable value={incidents} responsiveLayout="scroll">
+                    <Column field="incidentType" header="Type"></Column>
+                    <Column field="date" header="Date"></Column>
                     <Column field="player.name" header="Player"/>
-                    <Column field="playerAssisted.name" header="Player who assisted"/>
-                    <Column body={actionsShot} />
+                    <Column body={actionsIncident} />
                 </DataTable>
             </div>
 
@@ -94,7 +92,7 @@ export default function ShotList(props) {
                 footer={footDialogDeleted} onHide={hideDialog}>
                 <div className="flex align-items-center justify-content-center">
                     <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-                    {shot && <span>Confirm delete of <b>{shot.id}</b>?</span>}
+                    {incident && <span>Confirm delete of <b>{incident.id}</b>?</span>}
                 </div>
             </Dialog>
 
