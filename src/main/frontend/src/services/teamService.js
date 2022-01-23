@@ -20,11 +20,15 @@ import clientREST from "./clientREST";
     return clientREST.delete(`/team/${id}`);
   }
 
+  const searchTeam = (name) => {
+    return clientREST.get(`/team/search/${name}`);
+  }
 /* eslint import/no-anonymous-default-export: [2, {"allowObject": true}] */
 export default {
   getAllTeams,
   getTeam,
   createTeam,
   updateTeam,
-  deleteTeam
+  deleteTeam,
+  searchTeam
 }

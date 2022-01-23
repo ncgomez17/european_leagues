@@ -71,15 +71,15 @@ export default function DetailTeam() {
 
                 <form onSubmit={handleSubmit} >
                     <div className="field grid">
-                            <label htmlFor="name"className='col-fixed' >Name</label>
+                            <label htmlFor="name" className='col-fixed' >Name</label>
                             <div className="col">
                             <InputText id="name" value={team.name} onChange={(e) => onInputChange(e, 'name')} required autoFocus className={classNames({ 'p-invalid': submitted && !team.name })} />
                             {submitted && !team.name && <small className="p-error">A name must be indicated.</small>}
                         </div>
                     </div>
                         <div className="field grid">
-                            <label htmlFor="numberOfPlayers"className='col-fixed'>NumberOfPlayers</label>
-                            <div class="col">
+                            <label htmlFor="numberOfPlayers" className='col-fixed'>NumberOfPlayers</label>
+                            <div className="col">
                             <InputText id="numberOfPlayers" value={team.numberOfPlayers} onChange={(e) => onInputChange(e, 'numberOfPlayers')} required className={classNames({ 'p-invalid': submitted && !team.numberOfPlayers })} />
                             {submitted && !team.numberOfPlayers && <small className="p-error"> Number of players must be indicated.</small>}
                             </div>

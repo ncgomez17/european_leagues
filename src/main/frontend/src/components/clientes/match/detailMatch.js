@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
 
 import { InputText } from 'primereact/inputtext';
-import { InputNumber } from 'primereact/inputnumber';
+import { Calendar } from 'primereact/calendar';
 import { Button } from 'primereact/button';
 import { Divider } from 'primereact/divider';
 import { classNames } from 'primereact/utils';
+import { Dropdown } from 'primereact/dropdown';
 
 import { useParams, useNavigate } from "react-router-dom";
 
 import matchService from '../../../services/matchService';
+import teamService from '../../../services/teamService';
 
 //retocar (atributos que dependen de otras tablas)
 export default function DetailMatch() {
@@ -17,15 +19,21 @@ export default function DetailMatch() {
     const navigate = useNavigate();
     const isNew = !('id' in params);
 
-    const emptyMatch = { dateMatch: "", goalsHomeTeam: "", goalsVisitorTeam: "", homeTeam:"", visitorTeam:""}
+    const emptyMatch = { dateMatch: "", goalsHomeTeam: "", goalsVisitorTeam: "", homeTeam: { id: null, name: "", numberOfPlayers: "", league: "" },
+    visitorTeam: { id: null, name: "", numberOfPlayers: "", league: "" }}
     const [match, setMatch] = useState(emptyMatch);
     const [submitted, setSubmitted] = useState(false);
+    const [homeTeams, setHomeTeams] = useState([]);
+    const [visitorTeams, setVisitorTeams] = useState([]);
 
 
     useEffect(() => {
         if (!isNew) {
             matchService.getMatch(params.id).then(res => setMatch(res.data));
-        }   
+        } 
+        teamService.getAllTeams().then(res => {
+        setHomeTeams(res.data)
+        setVisitorTeams(res.data)});   
     }, [params.id,isNew]);
 
 
@@ -52,6 +60,24 @@ export default function DetailMatch() {
             navigate("/matchs");
         }
     }
+    function onInputDateMatchChange(e, dateMatch) {
+        const val = (e.target && e.target.value) || '';
+        let _match = { ...match };
+        _match[`${dateMatch}`] = val;
+        setMatch(_match);
+    }
+
+    function onHomeTeamChange(e) {
+        let _match = { ...match };
+        _match.homeTeam = e.value;
+        setMatch(_match);
+    }
+
+    function onVisitorTeamChange(e) {
+        let _match = { ...match };
+        _match.team = e.value;
+        setMatch(_match);
+    }
 
     function dataMatchCorrect(c) {
         return (c.dateMatch && c.homeTeam && c.visitorTeam);
@@ -64,29 +90,41 @@ export default function DetailMatch() {
                 {isNew && <span className="text-900 text-2xl font-medium mb-4 block">New Match</span>}
 
                 <form onSubmit={handleSubmit} >
-                    <div className="p-fluid">
-                        <div className="p-field">
-                            <label htmlFor="dateMatch" >Date of match</label>
-                            <InputNumber id="dateMatch" value={match.dateMatch} onChange={(e) => onInputChange(e, 'dateMatch')} required autoFocus className={classNames({ 'p-invalid': submitted && !match.dateMatch })} />
-                            {submitted && !match.dateMatch && <small className="p-error">Date must be indicated.</small>}
+                <div className="field grid">
+                            <label htmlFor="dateMatch" className='col-fixed'>Date Match</label>
+                            <div className="col">
+                            <Calendar id="dateMatch" required onChange={(e) => onInputDateMatchChange(e,'dateMatch')} dateFormat="yy-mm-dd" ></Calendar>
+                            </div>
                         </div>
 
-                        <div className="p-field">
-                            <label htmlFor="goalsHomeTeam">Goals Home Team</label>
+                        <div className="field grid">
+                            <label htmlFor="goalsHomeTeam" className='col-fixed'>Goals Home Team</label>
+                            <div className='col'>
                             <InputText id="goalsHomeTeam" value={match.goalsHomeTeam} onChange={(e) => onInputChange(e, 'goalsHomeTeam')} required className={classNames({ 'p-invalid': submitted && !match.goalsHomeTeam })} />
                             {submitted && !match.goalsHomeTeam && <small className="p-error"> Number Of goals home team must be indicated.</small>}
+                            </div>
                         </div>
-                        <div className="p-field">
-                            <label htmlFor="goalsVisitorTeam">Goals Visitor Team</label>
+                        <div className="field grid">
+                            <label htmlFor="goalsVisitorTeam" className='col-fixed'>Goals Visitor Team</label>
+                            <div className='col'>
                             <InputText id="goalsVisitorTeam" value={match.goalsVisitorTeam} onChange={(e) => onInputChange(e, 'goalsVisitorTeam')} required className={classNames({ 'p-invalid': submitted && !match.goalsVisitorTeam })} />
                             {submitted && !match.goalsVisitorTeam && <small className="p-error"> Number Of goals visitor team must be indicated.</small>}
+                            </div>
                         </div>
-                        <div className="p-field">
-                            <label htmlFor="homeTeam">Home Team</label>
-                            <InputText id="homeTeam" value={match.homeTeam} onChange={(e) => onInputChange(e, 'homeTeam')} required className={classNames({ 'p-invalid': submitted && !match.homeTeam })} />
-                            {submitted && !match.homeTeam && <small className="p-error"> Home team must be indicated.</small>}
+                        <div className="field grid">
+                            <label htmlFor="homeTeam" className='col-fixed'>Home Team</label>
+                            <div className='col'>
+                            <Dropdown id="homeTeams" value={match.homeTeam} options={homeTeams} onChange={onHomeTeamChange} optionLabel="name"
+                                filter showClear filterBy="team.name" placeholder="Select team" />
+                            </div>
                         </div>
-                    </div>
+                        <div className="field grid">
+                            <label htmlFor="visitorTeam" className='col-fixed'>Visitor Team</label>
+                            <div className='col'>
+                            <Dropdown id="visitorTeams" value={match.visitorTeam} options={visitorTeams} onChange={onVisitorTeamChange} optionLabel="name"
+                                filter showClear filterBy="team.name" placeholder="Select team" />
+                            </div>
+                        </div>
 
                     <Divider />
 

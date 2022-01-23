@@ -20,11 +20,16 @@ import clientREST from "./clientREST";
     return clientREST.delete(`/incident/${id}`);
   }
 
+  const searchIncidentByPlayerName = (playerName) => {
+    return clientREST.get(`/incident/search/${playerName}`);
+  }
+
 /* eslint import/no-anonymous-default-export: [2, {"allowObject": true}] */
 export default {
   getAllIncidents,
   getIncident,
   createIncident,
   updateIncident,
-  deleteIncident
+  deleteIncident,
+  searchIncidentByPlayerName
 }

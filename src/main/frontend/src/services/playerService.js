@@ -20,11 +20,16 @@ import clientREST from "./clientREST";
     return clientREST.delete(`/player/${id}`);
   }
 
+  const searchPlayer = (playerName) => {
+    return clientREST.get(`/player/search/${playerName}`);
+  }
+
 /* eslint import/no-anonymous-default-export: [2, {"allowObject": true}] */
 export default {
   getAllPlayers,
   getPlayer,
   createPlayer,
   updatePlayer,
-  deletePlayer
+  deletePlayer,
+  searchPlayer
 }

@@ -34,7 +34,7 @@ export default function MatchList(props) {
     }
 
     function editMatch(match) {
-        navigate(match.id);
+        navigate(match.id.toString());
     }
 
     function confirmDeleteMatch(match) {

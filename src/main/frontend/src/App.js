@@ -40,11 +40,11 @@ function App() {
 
         <div className="p-5">
           <Routes>
-            <Route path="/" element={<Home mensaje="HomePage" />} />
+            <Route path="/" element={<Home mensaje="European Leagues"/>} />
             <Route path="teams" >
               <Route index element={<TeamList />} />
-              <Route path="new" element={<DetailTeam />} />
-              <Route path=":id" element={<DetailTeam />} />
+              <Route path="new" element={<DetailTeam/>} />
+              <Route path=":id" element={<DetailTeam/>} />
             </Route>
 
             <Route path="players" >

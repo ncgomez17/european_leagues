@@ -20,6 +20,7 @@ import clientREST from "./clientREST";
     return clientREST.delete(`/match/${id}`);
   }
 
+
 /* eslint import/no-anonymous-default-export: [2, {"allowObject": true}] */
 export default {
   getAllMatchs,

@@ -20,11 +20,16 @@ import clientREST from "./clientREST";
     return clientREST.delete(`/shot/${id}`);
   }
 
+  const searchShotByPlayerName = (playerName) => {
+    return clientREST.get(`/shot/search/${playerName}`);
+  }
+
 /* eslint import/no-anonymous-default-export: [2, {"allowObject": true}] */
 export default {
   getAllShots,
   getShot,
   createShot,
   updateShot,
-  deleteShot
+  deleteShot,
+  searchShotByPlayerName
 }

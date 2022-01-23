@@ -5,7 +5,7 @@ import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { Dialog } from 'primereact/dialog';
-
+import { InputText } from 'primereact/inputtext';
 
 import { useNavigate } from 'react-router';
 
@@ -34,7 +34,7 @@ export default function IncidentList(props) {
     }
 
     function editIncident(incident) {
-        navigate(incident.id); 
+        navigate(incident.id.toString()); 
     }
 
     function confirmDeleteIncident(incident) {
@@ -45,6 +45,31 @@ export default function IncidentList(props) {
     function deleteIncident() {
         incidentService.deleteIncident(incident.id);
         hideDialog();
+    }
+
+    function onSearchChange(e) {
+        setLoading(true);
+        if(e.target.value ===""){
+            incidentService.getAllIncidents().then(res => {
+                setIncidents(res.data);
+                setLoading(false);
+            });            
+        }
+        else{
+        incidentService.searchIncidentByPlayerName(e.target.value).then(res => {
+            setIncidents(res.data);
+            setLoading(false);
+        });
+    }
+
+    }
+
+    function searchAll() {
+        setLoading(true);
+        incidentService.getAllIncidents().then(res => {
+            setIncidents(res.data);
+            setLoading(false);
+        });
     }
 
     function hideDialog() {
@@ -70,10 +95,18 @@ export default function IncidentList(props) {
     );
     return (
         <div>
-            <div className="text-3xl text-800 font-bold mb-4">List of shots</div>
+            <div className="text-3xl text-800 font-bold mb-4">List of incidents</div>
 
             
             {loading && <div> <ProgressSpinner /> Loading... </div>}
+            <div className="grid">
+                <div className="col-8">
+                    <div className="row">
+                        <InputText id="search" placeholder='Search incidents by player name' className="col-4 mr-2" onChange={onSearchChange} />
+                        <Button label="Search all Incidents" className="col-3 mt-2 mr-2" onClick={searchAll} />
+                    </div>
+                </div>
+            </div>
 
             <div className="mt-3 md:mt-0 flex justify-content-end">
                 <Button label="New incident" icon="pi pi-plus" className="p-button-lg" onClick={newIncident} tooltip="Create new incident" tooltipOptions={{position: 'bottom'}} />

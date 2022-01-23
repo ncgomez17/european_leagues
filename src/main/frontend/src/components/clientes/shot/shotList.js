@@ -5,7 +5,7 @@ import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { Dialog } from 'primereact/dialog';
-
+import { InputText } from 'primereact/inputtext';
 
 import { useNavigate } from 'react-router';
 
@@ -34,7 +34,7 @@ export default function ShotList(props) {
     }
 
     function editShot(shot) {
-        navigate(shot.id); 
+        navigate(shot.id.toString()); 
     }
 
     function confirmDeleteShot(shot) {
@@ -45,6 +45,30 @@ export default function ShotList(props) {
     function deleteShot() {
         shotService.deleteShot(shot.id);
         hideDialog();
+    }
+
+    function onSearchChange(e) {
+        setLoading(true);
+        if(e.target.value ===""){
+            shotService.getAllShots().then(res => {
+                setShots(res.data);
+                setLoading(false);
+            });            
+        }
+        else{
+        shotService.searchShotByPlayerName(e.target.value).then(res => {
+            setShots(res.data);
+            setLoading(false);
+        });
+    }
+
+    }
+    function searchAll() {
+        setLoading(true);
+        shotService.getAllShots().then(res => {
+            setShots(res.data);
+            setLoading(false);
+        });
     }
 
     function hideDialog() {
@@ -74,6 +98,15 @@ export default function ShotList(props) {
 
             
             {loading && <div> <ProgressSpinner /> Loading... </div>}
+
+            <div className="grid">
+                <div className="col-8">
+                    <div className="row">
+                        <InputText id="search" placeholder='Search shots by player name' className="col-4 mr-2" onChange={onSearchChange} />
+                        <Button label="Search all Shots" className="col-3 mt-2 mr-2" onClick={searchAll} />
+                    </div>
+                </div>
+            </div>
 
             <div className="mt-3 md:mt-0 flex justify-content-end">
                 <Button label="New shot" icon="pi pi-plus" className="p-button-lg" onClick={newShot} tooltip="Create new shot" tooltipOptions={{position: 'bottom'}} />

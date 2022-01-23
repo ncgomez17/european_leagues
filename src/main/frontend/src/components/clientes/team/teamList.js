@@ -5,6 +5,7 @@ import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { Dialog } from 'primereact/dialog';
+import { InputText } from 'primereact/inputtext';
 
 
 import { useNavigate } from 'react-router';
@@ -34,7 +35,7 @@ export default function TeamList(props) {
     }
 
     function editTeam(team) {
-        navigate(team.id); 
+        navigate(team.id.toString()); 
     }
 
     function confirmDeleteTeam(team) {
@@ -47,6 +48,31 @@ export default function TeamList(props) {
         teamService.getAllTeams().then(res => {
             setTeams(res.data);});        
         hideDialog();
+    }
+    
+    function onSearchChange(e) {
+        setLoading(true);
+        if(e.target.value ===""){
+            teamService.getAllTeams().then(res => {
+                setTeams(res.data);
+                setLoading(false);
+            });            
+        }
+        else{
+        teamService.searchTeam(e.target.value).then(res => {
+            setTeams(res.data);
+            setLoading(false);
+        });
+    }
+
+    }
+
+    function searchAll() {
+        setLoading(true);
+        teamService.getAllTeams().then(res => {
+            setTeams(res.data);
+            setLoading(false);
+        });
     }
 
     function hideDialog() {
@@ -76,6 +102,14 @@ export default function TeamList(props) {
 
             
             {loading && <div> <ProgressSpinner /> Loading... </div>}
+            <div className="grid">
+                <div className="col-8">
+                    <div className="row">
+                        <InputText id="search" placeholder='Search teams by name' className="col-4 mr-2" onChange={onSearchChange} />
+                        <Button label="Search all Teams" className="col-3 mt-2 mr-2" onClick={searchAll} />
+                    </div>
+                </div>
+            </div>
 
             <div className="mt-3 md:mt-0 flex justify-content-end">
                 <Button label="New team" icon="pi pi-plus" className="p-button-lg" onClick={newTeam} tooltip="Create new team" tooltipOptions={{position: 'bottom'}} />

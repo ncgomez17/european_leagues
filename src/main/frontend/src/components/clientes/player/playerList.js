@@ -5,7 +5,7 @@ import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { Dialog } from 'primereact/dialog';
-
+import { InputText } from 'primereact/inputtext';
 
 import { useNavigate } from 'react-router';
 
@@ -34,7 +34,7 @@ export default function PlayerList(props) {
     }
 
     function editPlayer(player) {
-        navigate(player.id); 
+        navigate(player.id.toString()); 
     }
 
     function confirmDeletePlayer(player) {
@@ -45,6 +45,31 @@ export default function PlayerList(props) {
     function deletePlayer() {
         playerService.deletePlayer(player.id);
         hideDialog();
+    }
+
+    function onSearchChange(e) {
+        setLoading(true);
+        if(e.target.value ===""){
+            playerService.getAllPlayers().then(res => {
+                setPlayers(res.data);
+                setLoading(false);
+            });            
+        }
+        else{
+        playerService.searchPlayer(e.target.value).then(res => {
+            setPlayers(res.data);
+            setLoading(false);
+        });
+    }
+
+    }
+
+    function searchAll() {
+        setLoading(true);
+        playerService.getAllPlayers().then(res => {
+            setPlayers(res.data);
+            setLoading(false);
+        });
     }
 
     function hideDialog() {
@@ -74,6 +99,14 @@ export default function PlayerList(props) {
 
             
             {loading && <div> <ProgressSpinner /> Loading... </div>}
+            <div className="grid">
+                <div className="col-8">
+                    <div className="row">
+                        <InputText id="search" placeholder='Search players by name' className="col-4 mr-2" onChange={onSearchChange} />
+                        <Button label="Search all Players" className="col-3 mt-2 mr-2" onClick={searchAll} />
+                    </div>
+                </div>
+            </div>
 
             <div className="mt-3 md:mt-0 flex justify-content-end">
                 <Button label="New player" icon="pi pi-plus" className="p-button-lg" onClick={newPlayer} tooltip="Create new player" tooltipOptions={{position: 'bottom'}} />
