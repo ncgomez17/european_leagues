@@ -5,7 +5,9 @@ import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { Dialog } from 'primereact/dialog';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { searchMatchs} from '../../../actions/match';
+import * as fromState from '../../../reducers';
 
 import { useNavigate } from 'react-router';
 
@@ -13,20 +15,24 @@ import matchService from '../../../services/matchService';
 
 export default function MatchList(props) {
 
-    const [matchs, setMatchs] = useState(null);
-    const [loading, setLoading] = useState(true);
     const [match, setMatch] = useState(null);
     const [dialog, setDialog] = useState(false);
+    const dispatch = useDispatch();
+
+    const matchs= useSelector(state => fromState.getMatchs(state));
+    const loading = useSelector(state => fromState.isMatchsPending (state));
+    //const error = useSelector(state => fromState.isTeamsRejected(state));
 
     let navigate = useNavigate();
 
+    const searchAllMatchs = () =>{
+
+        dispatch(searchMatchs());
+    };
 
     useEffect(() => {
-        matchService.getAllMatchs().then(res => {
-            setMatchs(res.data);
-            setLoading(false);
-        });
-    }, [dialog]);
+        searchAllMatchs();
+    }, []);
 
 
     function newMatch() {
@@ -44,6 +50,7 @@ export default function MatchList(props) {
 
     function deleteMatch() {
         matchService.deleteMatch(match.id);
+        searchAllMatchs();
         hideDialog();
     }
 

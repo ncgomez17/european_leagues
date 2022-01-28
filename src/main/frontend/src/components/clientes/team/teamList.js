@@ -6,7 +6,9 @@ import { Button } from 'primereact/button';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { searchTeams, searchTeamsByName} from '../../../actions/team';
+import * as fromState from '../../../reducers';
 
 import { useNavigate } from 'react-router';
 
@@ -14,20 +16,27 @@ import teamService from '../../../services/teamService';
 
 export default function TeamList(props) {
 
-    const [teams, setTeams] = useState(null);
-    const [loading, setLoading] = useState(true);
     const [team, setTeam] = useState(null);
     const [dialog, setDialog] = useState(false);
+    const dispatch = useDispatch();
+
+    const teams = useSelector(state => fromState.getTeams(state));
+    const loading = useSelector(state => fromState.isTeamsPending (state));
+    //const error = useSelector(state => fromState.isTeamsRejected(state));
 
     let navigate = useNavigate();
 
+    const searchAllTeams = () =>{
 
-    useEffect(() => {
-        teamService.getAllTeams().then(res => {
-            setTeams(res.data);
-            setLoading(false);
-        });
-    }, [dialog]);
+        dispatch(searchTeams());
+    };
+    const searchAllTeamsByName = (name) =>{
+
+        dispatch(searchTeamsByName(name));
+    };
+    useEffect(() =>{
+        searchAllTeams();
+    },[]);
 
 
     function newTeam() {
@@ -45,34 +54,18 @@ export default function TeamList(props) {
 
     function deleteTeam() {
         teamService.deleteTeam(team.id);
-        teamService.getAllTeams().then(res => {
-            setTeams(res.data);});        
+        searchAllTeams();
         hideDialog();
     }
     
     function onSearchChange(e) {
-        setLoading(true);
         if(e.target.value ===""){
-            teamService.getAllTeams().then(res => {
-                setTeams(res.data);
-                setLoading(false);
-            });            
+            searchAllTeams();           
         }
         else{
-        teamService.searchTeam(e.target.value).then(res => {
-            setTeams(res.data);
-            setLoading(false);
-        });
+        searchAllTeamsByName(e.target.value);
     }
 
-    }
-
-    function searchAll() {
-        setLoading(true);
-        teamService.getAllTeams().then(res => {
-            setTeams(res.data);
-            setLoading(false);
-        });
     }
 
     function hideDialog() {
@@ -106,7 +99,7 @@ export default function TeamList(props) {
                 <div className="col-8">
                     <div className="row">
                         <InputText id="search" placeholder='Search teams by name' className="col-4 mr-2" onChange={onSearchChange} />
-                        <Button label="Search all Teams" className="col-3 mt-2 mr-2" onClick={searchAll} />
+                        <Button label="Search all Teams" className="col-3 mt-2 mr-2" onClick={searchAllTeams} />
                     </div>
                 </div>
             </div>

@@ -6,6 +6,9 @@ import { Button } from 'primereact/button';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
+import { useSelector, useDispatch } from 'react-redux';
+import { searchIncidents, searchIncidentByName } from '../../../actions/incident';
+import * as fromState from '../../../reducers';
 
 import { useNavigate } from 'react-router';
 
@@ -13,20 +16,29 @@ import incidentService from '../../../services/incidentService';
 
 export default function IncidentList(props) {
 
-    const [incidents, setIncidents] = useState(null);
-    const [loading, setLoading] = useState(true);
     const [incident, setIncident] = useState(null);
     const [dialog, setDialog] = useState(false);
+    const dispatch = useDispatch();
+
+
+    const incidents = useSelector(state => fromState.getIncidents(state));
+    const loading = useSelector(state => fromState.isIncidentsPending (state));
+    //const error = useSelector(state => fromState.isTeamsRejected(state));
 
     let navigate = useNavigate();
 
+    const searchAllIncidents = () =>{
+
+        dispatch(searchIncidents());
+    };
+    const searchAllIncidentsByName = (name) =>{
+
+        dispatch(searchIncidentByName(name));
+    };
 
     useEffect(() => {
-        incidentService.getAllIncidents().then(res => {
-            setIncidents(res.data);
-            setLoading(false);
-        });
-    }, [dialog]);
+        searchAllIncidents();
+    }, []);
 
 
     function newIncident() {
@@ -44,34 +56,20 @@ export default function IncidentList(props) {
 
     function deleteIncident() {
         incidentService.deleteIncident(incident.id);
+        searchAllIncidents();
         hideDialog();
     }
 
     function onSearchChange(e) {
-        setLoading(true);
         if(e.target.value ===""){
-            incidentService.getAllIncidents().then(res => {
-                setIncidents(res.data);
-                setLoading(false);
-            });            
+            searchAllIncidents();
         }
         else{
-        incidentService.searchIncidentByPlayerName(e.target.value).then(res => {
-            setIncidents(res.data);
-            setLoading(false);
-        });
-    }
+            searchAllIncidentsByName(e.target.value);
 
     }
 
-    function searchAll() {
-        setLoading(true);
-        incidentService.getAllIncidents().then(res => {
-            setIncidents(res.data);
-            setLoading(false);
-        });
     }
-
     function hideDialog() {
         setIncident(null);
         setDialog(false);
@@ -103,7 +101,7 @@ export default function IncidentList(props) {
                 <div className="col-8">
                     <div className="row">
                         <InputText id="search" placeholder='Search incidents by player name' className="col-4 mr-2" onChange={onSearchChange} />
-                        <Button label="Search all Incidents" className="col-3 mt-2 mr-2" onClick={searchAll} />
+                        <Button label="Search all Incidents" className="col-3 mt-2 mr-2" onClick={searchAllIncidents} />
                     </div>
                 </div>
             </div>

@@ -6,6 +6,9 @@ import { Button } from 'primereact/button';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
+import { useSelector, useDispatch } from 'react-redux';
+import { searchPlayers, searchPlayerByName} from '../../../actions/player';
+import * as fromState from '../../../reducers';
 
 import { useNavigate } from 'react-router';
 
@@ -13,20 +16,27 @@ import playerService from '../../../services/playerService';
 
 export default function PlayerList(props) {
 
-    const [players, setPlayers] = useState(null);
-    const [loading, setLoading] = useState(true);
     const [player, setPlayer] = useState(null);
     const [dialog, setDialog] = useState(false);
+    const dispatch = useDispatch();
+    const players = useSelector(state => fromState.getPlayers(state));
+    const loading = useSelector(state => fromState.isPlayersPending (state));
+    //const error = useSelector(state => fromState.isTeamsRejected(state));
 
     let navigate = useNavigate();
 
+    const searchAllPlayers = () =>{
+
+        dispatch(searchPlayers());
+    };
+    const searchAllPlayersByName = (name) =>{
+
+        dispatch(searchPlayerByName(name));
+    };
 
     useEffect(() => {
-        playerService.getAllPlayers().then(res => {
-            setPlayers(res.data);
-            setLoading(false);
-        });
-    }, [dialog]);
+        searchAllPlayers();
+    }, []);
 
 
     function newPlayer() {
@@ -44,33 +54,19 @@ export default function PlayerList(props) {
 
     function deletePlayer() {
         playerService.deletePlayer(player.id);
+        searchAllPlayers();
         hideDialog();
     }
 
     function onSearchChange(e) {
-        setLoading(true);
         if(e.target.value ===""){
-            playerService.getAllPlayers().then(res => {
-                setPlayers(res.data);
-                setLoading(false);
-            });            
-        }
+            searchAllPlayers();
+            }          
         else{
-        playerService.searchPlayer(e.target.value).then(res => {
-            setPlayers(res.data);
-            setLoading(false);
-        });
+            searchAllPlayersByName(e.target.value);
+        };
     }
 
-    }
-
-    function searchAll() {
-        setLoading(true);
-        playerService.getAllPlayers().then(res => {
-            setPlayers(res.data);
-            setLoading(false);
-        });
-    }
 
     function hideDialog() {
         setPlayer(null);
@@ -103,7 +99,7 @@ export default function PlayerList(props) {
                 <div className="col-8">
                     <div className="row">
                         <InputText id="search" placeholder='Search players by name' className="col-4 mr-2" onChange={onSearchChange} />
-                        <Button label="Search all Players" className="col-3 mt-2 mr-2" onClick={searchAll} />
+                        <Button label="Search all Players" className="col-3 mt-2 mr-2" onClick={searchAllPlayers} />
                     </div>
                 </div>
             </div>

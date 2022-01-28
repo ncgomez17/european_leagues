@@ -98,7 +98,7 @@ export default function DetailPlayer() {
                         <div className="field grid">
                             <label htmlFor="teams" className='col-fixed'>Team</label>
                             <div className='col'>
-                            <Dropdown id="teams"value={player.team} options={teams} onChange={onTeamChange} optionLabel="name"
+                            <Dropdown id="teams" value={player.team} options={teams} onChange={onTeamChange} optionLabel="name"
                                 filter showClear filterBy="team.name" placeholder="Select team" />
                             </div>
                         </div>

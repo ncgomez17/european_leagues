@@ -6,6 +6,9 @@ import { Button } from 'primereact/button';
 import { ProgressSpinner } from 'primereact/progressspinner';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
+import { useSelector, useDispatch } from 'react-redux';
+import { searchShots, searchShotByName } from '../../../actions/shot';
+import * as fromState from '../../../reducers';
 
 import { useNavigate } from 'react-router';
 
@@ -13,20 +16,28 @@ import shotService from '../../../services/shotService';
 
 export default function ShotList(props) {
 
-    const [shots, setShots] = useState(null);
-    const [loading, setLoading] = useState(true);
     const [shot, setShot] = useState(null);
     const [dialog, setDialog] = useState(false);
+    const dispatch = useDispatch();
+
+    const shots = useSelector(state => fromState.getShots(state));
+    const loading = useSelector(state => fromState.isShotsPending (state));
+    //const error = useSelector(state => fromState.isTeamsRejected(state));
 
     let navigate = useNavigate();
 
+    const searchAllShots = () =>{
+
+        dispatch(searchShots());
+    };
+    const searchAllShotsByName = (name) =>{
+
+        dispatch(searchShotByName(name));
+    };
 
     useEffect(() => {
-        shotService.getAllShots().then(res => {
-            setShots(res.data);
-            setLoading(false);
-        });
-    }, [dialog]);
+        searchAllShots();
+    }, []);
 
 
     function newShot() {
@@ -44,31 +55,17 @@ export default function ShotList(props) {
 
     function deleteShot() {
         shotService.deleteShot(shot.id);
+        searchAllShots()
         hideDialog();
     }
 
     function onSearchChange(e) {
-        setLoading(true);
         if(e.target.value ===""){
-            shotService.getAllShots().then(res => {
-                setShots(res.data);
-                setLoading(false);
-            });            
-        }
+            searchAllShots(); 
+            }            
         else{
-        shotService.searchShotByPlayerName(e.target.value).then(res => {
-            setShots(res.data);
-            setLoading(false);
-        });
-    }
-
-    }
-    function searchAll() {
-        setLoading(true);
-        shotService.getAllShots().then(res => {
-            setShots(res.data);
-            setLoading(false);
-        });
+            searchAllShotsByName(e.target.value);
+        };
     }
 
     function hideDialog() {
@@ -103,7 +100,7 @@ export default function ShotList(props) {
                 <div className="col-8">
                     <div className="row">
                         <InputText id="search" placeholder='Search shots by player name' className="col-4 mr-2" onChange={onSearchChange} />
-                        <Button label="Search all Shots" className="col-3 mt-2 mr-2" onClick={searchAll} />
+                        <Button label="Search all Shots" className="col-3 mt-2 mr-2" onClick={searchAllShots} />
                     </div>
                 </div>
             </div>
