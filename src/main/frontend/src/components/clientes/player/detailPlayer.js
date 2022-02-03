@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useCallback } from 'react';
 
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Divider } from 'primereact/divider';
 import { classNames } from 'primereact/utils';
 import { Dropdown } from 'primereact/dropdown';
-
+import {  useDispatch } from 'react-redux';
+import { searchPlayers} from '../../../actions/player';
 import { useParams, useNavigate } from "react-router-dom";
 
 import playerService from '../../../services/playerService';
@@ -22,6 +23,7 @@ export default function DetailPlayer() {
     const [player, setPlayer] = useState(emptyPlayer);
     const [submitted, setSubmitted] = useState(false);
     const [teams, setTeams] = useState([]);
+    const dispatch = useDispatch();
 
 
     useEffect(() => {
@@ -31,6 +33,9 @@ export default function DetailPlayer() {
         teamService.getAllTeams().then(res => setTeams(res.data)); 
     }, [params.id,isNew]);
 
+    const searchAllPlayers  = useCallback(() => {
+        dispatch(searchPlayers());
+    }, [dispatch])
 
     function onInputChange(e, name) {
         const val = (e.target && e.target.value) || '';
@@ -53,9 +58,9 @@ export default function DetailPlayer() {
         setSubmitted(true);
         if (dataPlayerCorrect(player)) {
             if (isNew) {
-                playerService.createPlayer(player);
+                playerService.createPlayer(player).then(searchAllPlayers());
             } else {
-                playerService.updatePlayer(player);
+                playerService.updatePlayer(player).then(searchAllPlayers());
             }
             navigate("/players");
         }
@@ -91,7 +96,7 @@ export default function DetailPlayer() {
                         <div className="field grid">
                             <label htmlFor="position" className='col-fixed'>Position</label>
                             <div className='col'>
-                            <InputText id="position" value={player.position} onChange={(e) => onInputChange(e, 'position')} />
+                            <InputText id="position" required value={player.position} onChange={(e) => onInputChange(e, 'position')} />
                             </div>
                         </div>
 
@@ -99,7 +104,7 @@ export default function DetailPlayer() {
                             <label htmlFor="teams" className='col-fixed'>Team</label>
                             <div className='col'>
                             <Dropdown id="teams" value={player.team} options={teams} onChange={onTeamChange} optionLabel="name"
-                                filter showClear filterBy="team.name" placeholder="Select team" />
+                                filter showClear required filterBy="team.name" placeholder="Select team" />
                             </div>
                         </div>
                     <Divider />

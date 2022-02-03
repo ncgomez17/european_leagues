@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useCallback } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
@@ -25,10 +25,10 @@ export default function PlayerList(props) {
 
     let navigate = useNavigate();
 
-    const searchAllPlayers = () =>{
+    const searchAllPlayers = useCallback(() =>{
 
         dispatch(searchPlayers());
-    };
+    },[dispatch]);
     const searchAllPlayersByName = (name) =>{
 
         dispatch(searchPlayerByName(name));
@@ -36,7 +36,7 @@ export default function PlayerList(props) {
 
     useEffect(() => {
         searchAllPlayers();
-    }, []);
+    }, [searchAllPlayers]);
 
 
     function newPlayer() {

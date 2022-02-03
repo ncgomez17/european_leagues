@@ -22,7 +22,7 @@ export const searchPlayerByName = (name) =>({
 
 export const addPlayer = (playerDTO) =>({
   type: ADD_PLAYER,
-  payload: api.addPlayer(playerDTO).then(data => data.data),
+  payload: api.z(playerDTO).then(data => data.data),
 })
 
 export const getPlayer = (id) =>({

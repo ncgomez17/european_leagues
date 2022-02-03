@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useCallback } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
@@ -27,10 +27,10 @@ export default function IncidentList(props) {
 
     let navigate = useNavigate();
 
-    const searchAllIncidents = () =>{
+    const searchAllIncidents = useCallback(() =>{
 
         dispatch(searchIncidents());
-    };
+    },[dispatch]);
     const searchAllIncidentsByName = (name) =>{
 
         dispatch(searchIncidentByName(name));
@@ -38,7 +38,7 @@ export default function IncidentList(props) {
 
     useEffect(() => {
         searchAllIncidents();
-    }, []);
+    }, [searchAllIncidents]);
 
 
     function newIncident() {
@@ -83,6 +83,9 @@ export default function IncidentList(props) {
             </React.Fragment>
         );
     }
+    function dateTemplate(rowData, column) {
+        return new Date(rowData['date']).toLocaleDateString();
+    }
 
 
     const footDialogDeleted = (
@@ -113,7 +116,7 @@ export default function IncidentList(props) {
             <div className="surface-card p-4 border-round shadow-2">
                 <DataTable value={incidents} responsiveLayout="scroll">
                     <Column field="incidentType" header="Type"></Column>
-                    <Column field="date" header="Date"></Column>
+                    <Column field="date" body={dateTemplate} header="Date"></Column>
                     <Column field="player.name" header="Player"/>
                     <Column body={actionsIncident} />
                 </DataTable>

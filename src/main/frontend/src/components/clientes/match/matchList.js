@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useCallback } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
@@ -25,14 +25,14 @@ export default function MatchList(props) {
 
     let navigate = useNavigate();
 
-    const searchAllMatchs = () =>{
+    const searchAllMatchs = useCallback(() =>{
 
         dispatch(searchMatchs());
-    };
+    },[dispatch]);
 
     useEffect(() => {
         searchAllMatchs();
-    }, []);
+    }, [searchAllMatchs]);
 
 
     function newMatch() {
@@ -67,6 +67,10 @@ export default function MatchList(props) {
             </React.Fragment>
         );
     }
+    function dateTemplate(rowData, column) {
+        return new Date(rowData['dateMatch']).toLocaleDateString();
+    }
+
 
 
     const footDialogDeleted = (
@@ -88,11 +92,11 @@ export default function MatchList(props) {
 
             <div className="surface-card p-4 border-round shadow-2">
                 <DataTable value={matchs} responsiveLayout="scroll">
-                    <Column field="dateMatch" header="Date"></Column>
+                    <Column field="dateMatch" body={dateTemplate} header="Date"></Column>
                     <Column field="goalsHomeTeam" header="Goals home team"></Column>
                     <Column field="goalsVisitorTeam" header="Goals visitor team"></Column>
-                    <Column field="homeTeam" header="Home team" />
-                    <Column field="visitorTeam" header="Visitor Team"></Column>
+                    <Column field="homeTeam.name" header="Home team" />
+                    <Column field="visitorTeam.name" header="Visitor Team"></Column>
                     <Column body={actionsTeam} />
                 </DataTable>
             </div>

@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useCallback } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
@@ -25,18 +25,18 @@ export default function TeamList(props) {
     //const error = useSelector(state => fromState.isTeamsRejected(state));
 
     let navigate = useNavigate();
-
-    const searchAllTeams = () =>{
-
+    const searchAllTeams  = useCallback(() => {
         dispatch(searchTeams());
-    };
+    }, [dispatch])
+
     const searchAllTeamsByName = (name) =>{
 
         dispatch(searchTeamsByName(name));
     };
     useEffect(() =>{
         searchAllTeams();
-    },[]);
+        
+    },[searchAllTeams]);
 
 
     function newTeam() {
@@ -54,7 +54,7 @@ export default function TeamList(props) {
 
     function deleteTeam() {
         teamService.deleteTeam(team.id);
-        searchAllTeams();
+        searchAllTeams()
         hideDialog();
     }
     

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useCallback } from 'react';
 
 import { InputText } from 'primereact/inputtext';
 import { Calendar } from 'primereact/calendar';
@@ -6,6 +6,8 @@ import { Button } from 'primereact/button';
 import { Divider } from 'primereact/divider';
 import { classNames } from 'primereact/utils';
 import { Dropdown } from 'primereact/dropdown';
+import {  useDispatch } from 'react-redux';
+import { searchMatchs} from '../../../actions/match';
 
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -25,6 +27,7 @@ export default function DetailMatch() {
     const [submitted, setSubmitted] = useState(false);
     const [homeTeams, setHomeTeams] = useState([]);
     const [visitorTeams, setVisitorTeams] = useState([]);
+    const dispatch = useDispatch();
 
 
     useEffect(() => {
@@ -36,6 +39,9 @@ export default function DetailMatch() {
         setVisitorTeams(res.data)});   
     }, [params.id,isNew]);
 
+    const searchAllMatchs  = useCallback(() => {
+        dispatch(searchMatchs());
+    }, [dispatch])
 
     function onInputChange(e, name) {
         const val = (e.target && e.target.value) || '';
@@ -53,9 +59,9 @@ export default function DetailMatch() {
         setSubmitted(true);
         if (dataMatchCorrect(match)) {
             if (isNew) {
-                matchService.createMatch(match);
+                matchService.createMatch(match).then(searchAllMatchs());
             } else {
-                matchService.updateMatch(match);
+                matchService.updateMatch(match).then(searchAllMatchs());
             }
             navigate("/matchs");
         }
@@ -63,7 +69,8 @@ export default function DetailMatch() {
     function onInputDateMatchChange(e, dateMatch) {
         const val = (e.target && e.target.value) || '';
         let _match = { ...match };
-        _match[`${dateMatch}`] = val;
+        var fecha = new Date(val);
+        _match[`${dateMatch}`] =new Date(fecha.setDate(fecha.getDate() + 1))
         setMatch(_match);
     }
 
@@ -75,7 +82,7 @@ export default function DetailMatch() {
 
     function onVisitorTeamChange(e) {
         let _match = { ...match };
-        _match.team = e.value;
+        _match.visitorTeam = e.value;
         setMatch(_match);
     }
 
@@ -93,7 +100,7 @@ export default function DetailMatch() {
                 <div className="field grid">
                             <label htmlFor="dateMatch" className='col-fixed'>Date Match</label>
                             <div className="col">
-                            <Calendar id="dateMatch" required onChange={(e) => onInputDateMatchChange(e,'dateMatch')} dateFormat="yy-mm-dd" ></Calendar>
+                            <Calendar id="dateMatch" value={new Date(match.dateMatch)} required onChange={(e) => onInputDateMatchChange(e,'dateMatch')} dateFormat="yy-mm-dd" ></Calendar>
                             </div>
                         </div>
 
@@ -115,14 +122,14 @@ export default function DetailMatch() {
                             <label htmlFor="homeTeam" className='col-fixed'>Home Team</label>
                             <div className='col'>
                             <Dropdown id="homeTeams" value={match.homeTeam} options={homeTeams} onChange={onHomeTeamChange} optionLabel="name"
-                                filter showClear filterBy="team.name" placeholder="Select team" />
+                                filter showClear required filterBy="team.name" placeholder="Select team" />
                             </div>
                         </div>
                         <div className="field grid">
                             <label htmlFor="visitorTeam" className='col-fixed'>Visitor Team</label>
                             <div className='col'>
                             <Dropdown id="visitorTeams" value={match.visitorTeam} options={visitorTeams} onChange={onVisitorTeamChange} optionLabel="name"
-                                filter showClear filterBy="team.name" placeholder="Select team" />
+                                filter showClear  required filterBy="team.name" placeholder="Select team" />
                             </div>
                         </div>
 

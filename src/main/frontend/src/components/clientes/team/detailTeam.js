@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useCallback } from 'react';
 
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Divider } from 'primereact/divider';
 import { classNames } from 'primereact/utils';
 import { Dropdown } from 'primereact/dropdown';
-
+import {  useDispatch } from 'react-redux';
+import { searchTeams} from '../../../actions/team';
 import { useParams, useNavigate } from "react-router-dom";
 
 import teamService from '../../../services/teamService';
@@ -20,7 +21,7 @@ export default function DetailTeam() {
     const [team, setTeam] = useState(emptyTeam);
     const [submitted, setSubmitted] = useState(false);
     const nameLeagues =["Premier League","LaLiga","Serie A","Bundesliga","Ligue 1","Primera División Portuguesa"]
-
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (!isNew) {
@@ -28,6 +29,9 @@ export default function DetailTeam() {
         }   
     }, [params.id,isNew]);
 
+    const searchAllTeams  = useCallback(() => {
+        dispatch(searchTeams());
+    }, [dispatch])
 
     function onInputChange(e, name) {
         const val = (e.target && e.target.value) || '';
@@ -51,9 +55,9 @@ export default function DetailTeam() {
         setSubmitted(true);
         if (dataTeamCorrect(team)) {
             if (isNew) {
-                teamService.createTeam(team);
+                teamService.createTeam(team).then(searchAllTeams());
             } else {
-                teamService.updateTeam(team);
+                teamService.updateTeam(team).then(searchAllTeams());
             }
             navigate("/teams");
         }
@@ -88,7 +92,7 @@ export default function DetailTeam() {
                             <label htmlFor="leagues"className='col-fixed'>League</label>
                             <div className='col'>
                             <Dropdown id="leagues"value={team.league} options={nameLeagues} onChange={onLeagueChange}
-                                filter showClear filterBy="league" placeholder="Select league" />
+                                filter showClear required filterBy="league" placeholder="Select league" />
                             </div>
                         </div>
 

@@ -14,9 +14,7 @@ export function teams(state = initialState.todos, {type, payload}){
         case fulfiledType(DELETE_TEAM):
         case fulfiledType(UPDATE_TEAM):
         case fulfiledType(SEARCH_TEAMS_BY_NAME):
-        case fulfiledType(GET_TEAM):
         case fulfiledType(SEARCH_TEAMS):
-            console.log(payload)
             return payload;
 
         case pendingType(SEARCH_TEAMS):

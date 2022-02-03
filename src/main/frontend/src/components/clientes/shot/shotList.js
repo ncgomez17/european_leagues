@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useCallback } from 'react';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
@@ -26,10 +26,10 @@ export default function ShotList(props) {
 
     let navigate = useNavigate();
 
-    const searchAllShots = () =>{
+    const searchAllShots =useCallback( () =>{
 
         dispatch(searchShots());
-    };
+    },[dispatch]);
     const searchAllShotsByName = (name) =>{
 
         dispatch(searchShotByName(name));
@@ -37,7 +37,7 @@ export default function ShotList(props) {
 
     useEffect(() => {
         searchAllShots();
-    }, []);
+    }, [searchAllShots]);
 
 
     function newShot() {

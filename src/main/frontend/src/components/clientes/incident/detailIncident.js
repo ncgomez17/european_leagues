@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect ,useCallback} from 'react';
 
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
@@ -6,13 +6,13 @@ import { Divider } from 'primereact/divider';
 import { classNames } from 'primereact/utils';
 import { Calendar } from 'primereact/calendar';
 import { Dropdown } from 'primereact/dropdown';
-
+import {  useDispatch } from 'react-redux';
+import { searchIncidents} from '../../../actions/incident';
 import { useParams, useNavigate } from "react-router-dom";
 
 import incidentService from '../../../services/incidentService';
 import playerService from '../../../services/playerService';
 
-//retocar (atributos que dependen de otras tablas)
 export default function DetailIncident() {
 
     const params = useParams();
@@ -23,6 +23,7 @@ export default function DetailIncident() {
     const [incident, setIncident] = useState(emptyIncident);
     const [submitted, setSubmitted] = useState(false);
     const [players, setPlayers] = useState([]);
+    const dispatch = useDispatch();
 
 
     useEffect(() => {
@@ -32,6 +33,9 @@ export default function DetailIncident() {
         playerService.getAllPlayers().then(res => setPlayers(res.data)); 
     }, [params.id,isNew]);
 
+    const searchAllIncidents  = useCallback(() => {
+        dispatch(searchIncidents());
+    }, [dispatch])
 
     function onInputChange(e, name) {
         const val = (e.target && e.target.value) || '';
@@ -49,7 +53,8 @@ export default function DetailIncident() {
     function onInputDateChange(e, date) {
         const val = (e.target && e.target.value) || '';
         let _incident = { ...incident };
-        _incident[`${date}`] = val;
+        var fecha = new Date(val);
+        _incident[`${date}`] = new Date(fecha.setDate(fecha.getDate() + 1))
         setIncident(_incident);
     }
 
@@ -62,9 +67,9 @@ export default function DetailIncident() {
         setSubmitted(true);
         if (dataIncidentCorrect(incident)) {
             if (isNew) {
-                incidentService.createIncident(incident);
+                incidentService.createIncident(incident).then(searchAllIncidents());
             } else {
-                incidentService.updateIncident(incident);
+                incidentService.updateIncident(incident).then(searchAllIncidents());
             }
             navigate("/incidents");
         }
@@ -75,6 +80,7 @@ export default function DetailIncident() {
     }
 
     return (
+        
         <div>
             <div className="surface-card border-round shadow-2 p-4">
                 {!isNew && <span className="text-900 text-2xl font-medium mb-4 block">Detail of Incident</span>}
@@ -91,7 +97,7 @@ export default function DetailIncident() {
                         <div className="field grid">
                             <label htmlFor="date" className='col-fixed'>Date</label>
                             <div className="col">
-                            <Calendar id="date" required onChange={(e) => onInputDateChange(e,'date')} dateFormat="yy-mm-dd" ></Calendar>
+                            <Calendar id="date" required value={new Date(incident.date)} onChange={(e) => onInputDateChange(e,'date')} dateFormat="yy-mm-dd" ></Calendar>
                             </div>
                         </div>
 
@@ -99,7 +105,7 @@ export default function DetailIncident() {
                             <label htmlFor="player" className='col-fixed'>Player</label>
                             <div className='col'>
                             <Dropdown id="players" value={incident.player} options={players} onChange={onPlayerChange} optionLabel="name"
-                                filter showClear filterBy="player.name" placeholder="Select player" />
+                                filter showClear required filterBy="player.name" placeholder="Select player" />
                             </div>
                         </div>
 
