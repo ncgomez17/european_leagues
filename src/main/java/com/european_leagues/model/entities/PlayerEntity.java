@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name="PLAYER")
@@ -27,5 +28,11 @@ public class PlayerEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name = "FK_TEAM", nullable = false)
     TeamEntity team;
+
+    @OneToMany(mappedBy = "player",cascade = CascadeType.ALL,orphanRemoval = true)
+    List<ShotEntity> shot;
+
+    @OneToMany(mappedBy = "player",cascade = CascadeType.ALL,orphanRemoval = true)
+    List<IncidentEntity> incident;
 
 }

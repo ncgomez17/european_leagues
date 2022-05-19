@@ -62,7 +62,6 @@ public class TeamServiceImpl implements ITeamService {
         }
         teamEntity.setName(teamDto.getName());
         teamEntity.setLeague(teamDto.getLeague());
-        teamEntity.setPlayers(teamDto.getPlayers().stream().map(playerMapper::toPlayerEntity).collect(Collectors.toList()));
         teamEntity.setNumberOfPlayers(teamDto.getNumberOfPlayers());
 
         teamRepository.save(teamEntity);
@@ -72,10 +71,10 @@ public class TeamServiceImpl implements ITeamService {
     @Override
     public void deleteById(Integer id){
         Objects.requireNonNull(id);
-
         this.teamRepository.delete(this.teamRepository.findById(id)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("The team with that id %d not exists",id))));
+
     }
 
     @Override
@@ -85,5 +84,13 @@ public class TeamServiceImpl implements ITeamService {
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("The team with that id %d not exists",id)));
         return this.teamMapper.toTeamDto(teamEntity);
+    }
+
+    @Override
+    public List<TeamDto> searchTeam(String name){
+        Objects.requireNonNull(name);
+        List<TeamEntity> teamsEntities = this.teamRepository.findByNameContaining(name);
+
+        return teamsEntities.stream().map(teamMapper::toTeamDto).collect(Collectors.toList());
     }
 }

@@ -21,6 +21,9 @@ paths:
   /shot/{shotId}:
     $ref: 'openapi/api/shot.api.yml#/shot-shotId'
 
+  /shot/search/{playerName}:
+    $ref: 'openapi/api/shot.api.yml#/shot-playerName'
+
   /match:
     $ref: 'openapi/api/match.api.yml#/match'
 
@@ -30,8 +33,11 @@ paths:
   /incident:
     $ref: 'openapi/api/incident.api.yml#/incident'
 
-  /incident/:
+  /incident/{incidentId}:
     $ref: 'openapi/api/incident.api.yml#/incident-incidentId'
+
+  /incident/search/{playerName}:
+    $ref: 'openapi/api/incident.api.yml#/incident-playerName'
 
   /team:
     $ref: 'openapi/api/team.api.yml#/team'
@@ -39,11 +45,17 @@ paths:
   /team/{teamId}:
     $ref: 'openapi/api/team.api.yml#/team-teamId'
 
+  /team/search/{teamName}:
+    $ref: 'openapi/api/team.api.yml#/team-teamName'
+
   /player:
     $ref: 'openapi/api/player.api.yml#/player'
 
   /player/{playerId}:
     $ref: 'openapi/api/player.api.yml#/player-playerId'
+
+  /player/search/{playerName}:
+    $ref: 'openapi/api/player.api.yml#/player-playerName'
 
 
 

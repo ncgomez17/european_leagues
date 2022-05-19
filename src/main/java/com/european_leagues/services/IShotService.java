@@ -10,4 +10,5 @@ public interface IShotService {
     ShotDto save(ShotDto dto);
     void deleteById(Integer id);
     ShotDto getById(Integer id);
+    List<ShotDto> searchShot(String playerName);
 }

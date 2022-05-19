@@ -10,4 +10,5 @@ public interface IPlayerService {
     PlayerDto save(PlayerDto dto);
     void deleteById(Integer id);
     PlayerDto getById(Integer id);
+    List<PlayerDto> searchPlayer(String name);
 }

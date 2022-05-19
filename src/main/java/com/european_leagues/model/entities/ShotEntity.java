@@ -2,6 +2,8 @@ package com.european_leagues.model.entities;
 
 import com.european_leagues.utils.enums.Site;
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -26,15 +28,9 @@ public class ShotEntity implements Serializable {
     Site site;
 
     @ManyToOne
-    @JoinColumn(name = "FK_MATCH", nullable = false)
-    MatchEntity match;
-
-    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "FK_PLAYER", nullable = false)
     PlayerEntity player;
 
-    @ManyToOne
-    @JoinColumn(name = "FK_PLAYER_ASSISTED", nullable = false)
-    PlayerEntity playerAssisted;
 
 }

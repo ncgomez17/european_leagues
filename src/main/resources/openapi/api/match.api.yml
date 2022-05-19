@@ -86,7 +86,7 @@ match-matchId:
     summary: Get match by match id
     operationId: getMatchById
     parameters:
-      - name: MatchId
+      - name: matchId
         in: path
         description: 'The id that needs to be fetched. '
         required: true

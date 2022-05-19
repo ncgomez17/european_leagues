@@ -13,8 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
-import java.time.ZoneId;
-import java.util.Date;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -42,10 +41,10 @@ public class IncidentServiceImpl implements IIncidentService {
     }
 
     @Override
-    public IncidentDto save(IncidentDto incidentDto){
+    public IncidentDto save(IncidentDto incidentDto) throws ParseException {
         Objects.requireNonNull(incidentDto);
         Objects.requireNonNull(incidentDto.getIncidentType());
-
+        System.out.println(incidentDto);
         IncidentEntity incidentEntity;
         if(Objects.nonNull(incidentDto.getId())){
             incidentEntity = this.incidentRepository.findById(incidentDto.getId())
@@ -57,12 +56,9 @@ public class IncidentServiceImpl implements IIncidentService {
             incidentEntity.setId(this.incidentRepository.getNextValId());
         }
         incidentEntity.setIncidentType(incidentDto.getIncidentType());
-        incidentEntity.setDate(Date.from(incidentDto.getDate().atStartOfDay()
-                .atZone(ZoneId.systemDefault())
-                .toInstant()));
-        incidentEntity.setMatch(matchMapper.toMatchEntity(incidentDto.getMatch()));
+        incidentEntity.setDate(incidentDto.getDate());
         incidentEntity.setPlayer(playerMapper.toPlayerEntity(incidentDto.getPlayer()));
-
+        System.out.println(incidentEntity);
         incidentRepository.save(incidentEntity);
         return this.incidentMapper.toIncidentDto(incidentEntity);
     }
@@ -82,6 +78,12 @@ public class IncidentServiceImpl implements IIncidentService {
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("The incident with that id %d not exists",id)));
         return this.incidentMapper.toIncidentDto(incidentEntity);
+    }
+    @Override
+    public List<IncidentDto> searchIncident(String playerName){
+        Objects.requireNonNull(playerName);
+        List<IncidentEntity> incidentsEntities = this.incidentRepository.findByPlayerNameContaining(playerName);
+        return incidentsEntities.stream().map(incidentMapper::toIncidentDto).collect(Collectors.toList());
     }
 
 

@@ -9,4 +9,5 @@ public interface ITeamService {
     TeamDto save(TeamDto dto);
     void deleteById(Integer id);
     TeamDto getById(Integer id);
+    List<TeamDto> searchTeam(String name);
 }

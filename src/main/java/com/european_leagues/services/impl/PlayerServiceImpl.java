@@ -71,7 +71,6 @@ public class PlayerServiceImpl implements IPlayerService {
     @Override
     public void deleteById(Integer id){
         Objects.requireNonNull(id);
-
         this.playerRepository.delete(this.playerRepository.findById(id)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("The player with that id %d not exists",id))));
@@ -84,5 +83,11 @@ public class PlayerServiceImpl implements IPlayerService {
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("The player with that id %d not exists",id)));
         return this.playerMapper.toPlayerDto(playerEntity);
+    }
+    @Override
+    public List<PlayerDto> searchPlayer(String name){
+        Objects.requireNonNull(name);
+        List<PlayerEntity> playersEntities = this.playerRepository.findByNameContaining(name);
+        return playersEntities.stream().map(playerMapper::toPlayerDto).collect(Collectors.toList());
     }
 }

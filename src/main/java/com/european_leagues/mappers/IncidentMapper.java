@@ -11,14 +11,12 @@ public interface IncidentMapper {
     @Mapping(target="id", source="id")
     @Mapping(target="incidentType", source="incidentType")
     @Mapping(target="date", source="date")
-    @Mapping(target="match", source="match")
     @Mapping(target="player", source="player")
     IncidentEntity toIncidentEntity(IncidentDto dto);
 
     @Mapping(target="id", source="id")
     @Mapping(target="incidentType", source="incidentType")
     @Mapping(target="date", source="date")
-    @Mapping(target="match", source="match")
     @Mapping(target="player", source="player")
     IncidentDto toIncidentDto(IncidentEntity entity);
 }

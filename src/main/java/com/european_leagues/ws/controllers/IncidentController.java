@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -19,7 +20,7 @@ public class IncidentController implements IncidentApi {
     private IIncidentService incidentService;
 
     @Override
-    public ResponseEntity<IncidentDto> createIncident(@Valid final IncidentDto incidentDto){
+    public ResponseEntity<IncidentDto> createIncident(@Valid final IncidentDto incidentDto) throws ParseException {
         final IncidentDto response = this.incidentService.save(incidentDto);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -42,8 +43,13 @@ public class IncidentController implements IncidentApi {
 
     }
     @Override
-    public ResponseEntity<IncidentDto> updateIncident(IncidentDto incidentDto){
+    public ResponseEntity<IncidentDto> updateIncident(IncidentDto incidentDto) throws ParseException {
         final IncidentDto response = this.incidentService.save(incidentDto);
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
+    @Override
+    public ResponseEntity<List<IncidentDto>> searchIncidentByPlayerName(String playerName){
+        final List<IncidentDto> response = this.incidentService.searchIncident(playerName);
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 

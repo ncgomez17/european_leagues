@@ -3,7 +3,7 @@ team:
     tags:
       - team
     summary: Get all teams
-    description: get all shots
+    description: get all teams
     operationId: getTeams
     responses:
       200:
@@ -122,6 +122,31 @@ team-teamId:
       400:
         description: Invalid id supplied
         content: { }
+      404:
+        description: Team not found
+        content: { }
+team-teamName:
+  get:
+    tags:
+      - team
+    summary: Search teams with that name
+    operationId: searchTeamByName
+    parameters:
+      - name: teamName
+        in: path
+        description: 'The name that needs to be fetched. '
+        required: true
+        schema:
+          type: string
+    responses:
+      200:
+        description: successful operation
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../model/team.model.yml#/components/schemas/TeamDto'
       404:
         description: Team not found
         content: { }

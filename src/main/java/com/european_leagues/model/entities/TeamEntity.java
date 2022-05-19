@@ -25,7 +25,14 @@ public class TeamEntity implements Serializable {
     @Column(name="league")
     String league;
 
-    @OneToMany(mappedBy = "team",cascade = CascadeType.ALL, orphanRemoval=true)
-    List<PlayerEntity> players;
+    @OneToMany(mappedBy = "team",cascade = CascadeType.ALL, orphanRemoval = true)
+    List<PlayerEntity> player;
+
+    @OneToMany(mappedBy = "visitorTeam",cascade = CascadeType.ALL, orphanRemoval = true)
+    List<MatchEntity> visitorTeam;
+
+    @OneToMany(mappedBy = "homeTeam",cascade = CascadeType.ALL, orphanRemoval = true)
+    List<MatchEntity> homeTeam;
+
 
 }

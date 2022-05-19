@@ -56,11 +56,9 @@ public class ShotServiceImpl implements IShotService {
             shotEntity = new ShotEntity();
             shotEntity.setId(this.shotRepository.getNextValId());
         }
-        shotEntity.setMatch(matchMapper.toMatchEntity(shotDto.getMatch()));
         shotEntity.setMinute(shotDto.getMinute());
         shotEntity.setPlayer(playerMapper.toPlayerEntity(shotDto.getPlayer()));
         shotEntity.setResult(shotDto.getResult());
-        shotEntity.setPlayerAssisted(playerMapper.toPlayerEntity(shotDto.getPlayerAssisted()));
         shotEntity.setSite(Site.valueOf(shotDto.getSite().getValue()));
         shotRepository.save(shotEntity);
         return this.shotMapper.toShotDto(shotEntity);
@@ -82,5 +80,12 @@ public class ShotServiceImpl implements IShotService {
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         String.format("The shot with that id %d not exists",id)));
         return this.shotMapper.toShotDto(shotEntity);
+    }
+    @Override
+    public List<ShotDto> searchShot(String playerName){
+        Objects.requireNonNull(playerName);
+        List<ShotEntity> shotsEntities = this.shotRepository.findByPlayerNameContaining(playerName);
+
+        return shotsEntities.stream().map(shotMapper::toShotDto).collect(Collectors.toList());
     }
 }

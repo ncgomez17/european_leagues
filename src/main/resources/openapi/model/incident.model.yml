@@ -10,9 +10,6 @@ components:
         date:
           type: string
           format: date
-        match:
-          type: object
-          $ref: "match.model.yml#/components/schemas/MatchDto"
         player:
           type: object
           $ref: "player.model.yml#/components/schemas/PlayerDto"

@@ -125,3 +125,28 @@ shot-shotId:
       404:
         description: Shot not found
         content: { }
+shot-playerName:
+  get:
+    tags:
+      - shot
+    summary: Search shots with that player name
+    operationId: searchShotByPlayerName
+    parameters:
+      - name: playerName
+        in: path
+        description: 'The player name that needs to be fetched. '
+        required: true
+        schema:
+          type: string
+    responses:
+      200:
+        description: successful operation
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../model/shot.model.yml#/components/schemas/ShotDto'
+      404:
+        description: Shot not found
+        content: { }

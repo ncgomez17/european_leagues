@@ -1,10 +1,12 @@
 package com.european_leagues.model.entities;
 
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name="INCIDENT")
@@ -20,14 +22,10 @@ public class IncidentEntity implements Serializable {
     String incidentType;
 
     @Column(name="date")
-    @Temporal(TemporalType.TIMESTAMP)
-    Date date;
+    LocalDate date;
 
     @ManyToOne
-    @JoinColumn(name = "FK_MATCH", nullable = false)
-    MatchEntity match;
-
-    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "FK_PLAYER", nullable = false)
     PlayerEntity player;
 }

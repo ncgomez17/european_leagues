@@ -125,3 +125,28 @@ incident-incidentId:
       404:
         description: Incident not found
         content: { }
+incident-playerName:
+  get:
+    tags:
+      - incident
+    summary: Search incidents with that name
+    operationId: searchIncidentByPlayerName
+    parameters:
+      - name: playerName
+        in: path
+        description: 'The name that needs to be fetched. '
+        required: true
+        schema:
+          type: string
+    responses:
+      200:
+        description: successful operation
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../model/incident.model.yml#/components/schemas/IncidentDto'
+      404:
+        description: Incident not found
+        content: { }

@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -52,9 +50,7 @@ public class MatchServiceImpl implements IMatchService {
             matchEntity = new MatchEntity();
             matchEntity.setId(this.matchRepository.getNextValId());
         }
-        matchEntity.setDateMatch(Date.from(matchDto.getDateMatch().atStartOfDay()
-                .atZone(ZoneId.systemDefault())
-                .toInstant()));
+        matchEntity.setDateMatch(matchDto.getDateMatch());
         matchEntity.setGoalsHomeTeam(matchDto.getGoalsHomeTeam());
         matchEntity.setGoalsVisitorTeam(matchDto.getGoalsVisitorTeam());
         matchEntity.setHomeTeam(teamMapper.toTeamEntity(matchDto.getHomeTeam()));

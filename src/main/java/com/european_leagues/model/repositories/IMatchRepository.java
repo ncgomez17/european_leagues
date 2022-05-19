@@ -10,4 +10,5 @@ public interface IMatchRepository extends JpaRepository<MatchEntity,Integer> {
 
     @Query(value = "SELECT COALESCE(MAX(c.id),0)+1 FROM MatchEntity c")
     Integer getNextValId();
+
 }

@@ -46,4 +46,9 @@ public class TeamController implements TeamApi {
         final TeamDto response = this.teamService.save(teamDto);
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
+    @Override
+    public ResponseEntity<List<TeamDto>> searchTeamByName(String name){
+        final List<TeamDto> response = this.teamService.searchTeam(name);
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
 }

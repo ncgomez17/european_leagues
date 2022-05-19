@@ -12,7 +12,3 @@ components:
           format: int32
         league:
           type: string
-        players:
-          type: array
-          items:
-            $ref: "player.model.yml#/components/schemas/PlayerDto"

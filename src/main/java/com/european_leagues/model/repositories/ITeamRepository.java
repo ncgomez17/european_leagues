@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -14,4 +15,6 @@ public interface ITeamRepository extends JpaRepository<TeamEntity,Integer> {
 
     @Query(value = "SELECT COALESCE(MAX(c.id),0)+1 FROM TeamEntity c")
     Integer getNextValId();
+
+    List<TeamEntity> findByNameContaining(String name);
 }

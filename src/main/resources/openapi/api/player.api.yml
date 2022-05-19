@@ -125,3 +125,28 @@ player-playerId:
       404:
         description: Player not found
         content: { }
+player-playerName:
+  get:
+    tags:
+      - player
+    summary: Search players with that name
+    operationId: searchPlayerByName
+    parameters:
+      - name: playerName
+        in: path
+        description: 'The name that needs to be fetched. '
+        required: true
+        schema:
+          type: string
+    responses:
+      200:
+        description: successful operation
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '../model/player.model.yml#/components/schemas/PlayerDto'
+      404:
+        description: PLayer not found
+        content: { }

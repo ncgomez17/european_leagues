@@ -13,12 +13,6 @@ components:
         site:
           type: string
           enum: [HOME, VISITOR]
-        match:
-          type: object
-          $ref: "match.model.yml#/components/schemas/MatchDto"
         player:
-          type: object
-          $ref: "player.model.yml#/components/schemas/PlayerDto"
-        playerAssisted:
           type: object
           $ref: "player.model.yml#/components/schemas/PlayerDto"

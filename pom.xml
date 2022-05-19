@@ -19,9 +19,9 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-			<version>2.2.6.RELEASE</version>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -47,19 +47,25 @@
 			<version>3.3.4</version>
 		</dependency>
 		<dependency>
-			<groupId>org.openapitools</groupId>
-			<artifactId>jackson-databind-nullable</artifactId>
-			<version>0.2.1</version>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.5.10</version>
 		</dependency>
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
-			<version>2.9.2</version>
+			<version>3.0.0</version>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
-			<version>2.4.4</version>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.openapitools</groupId>
+			<artifactId>jackson-databind-nullable</artifactId>
+			<version>0.2.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mapstruct</groupId>
@@ -129,48 +135,48 @@
 					</execution>
 				</executions>
 			</plugin>
-				<plugin>
-					<groupId>com.github.eirslett</groupId>
-					<artifactId>frontend-maven-plugin</artifactId>
-					<version>1.6</version>
-					<executions>
-						<execution>
-							<id>install node and npm</id>
-							<goals>
-								<goal>install-node-and-npm</goal>
-							</goals>
-							<configuration>
-								<nodeVersion>v10.19.0</nodeVersion>
-								<npmVersion>6.14.4</npmVersion>
-								<nodeDownloadRoot>http://npm.taobao.org/mirrors/node/</nodeDownloadRoot>
-								<!--<npmDownloadRoot>http://npm.taobao.org/mirrors/npm/</npmDownloadRoot>-->
-							</configuration>
-						</execution>
-						<execution>
-							<id>npm install</id>
-							<goals>
-								<goal>npm</goal>
-							</goals>
-							<configuration>
-								<arguments>install</arguments>
-							</configuration>
-						</execution>
+<!--				<plugin>-->
+<!--					<groupId>com.github.eirslett</groupId>-->
+<!--					<artifactId>frontend-maven-plugin</artifactId>-->
+<!--					<version>1.6</version>-->
+<!--					<executions>-->
+<!--						<execution>-->
+<!--							<id>install node and npm</id>-->
+<!--							<goals>-->
+<!--								<goal>install-node-and-npm</goal>-->
+<!--							</goals>-->
+<!--							<configuration>-->
+<!--								<nodeVersion>v10.19.0</nodeVersion>-->
+<!--								<npmVersion>6.14.4</npmVersion>-->
+<!--								<nodeDownloadRoot>http://npm.taobao.org/mirrors/node/</nodeDownloadRoot>-->
+<!--								&lt;!&ndash;<npmDownloadRoot>http://npm.taobao.org/mirrors/npm/</npmDownloadRoot>&ndash;&gt;-->
+<!--							</configuration>-->
+<!--						</execution>-->
+<!--						<execution>-->
+<!--							<id>npm install</id>-->
+<!--							<goals>-->
+<!--								<goal>npm</goal>-->
+<!--							</goals>-->
+<!--							<configuration>-->
+<!--								<arguments>install</arguments>-->
+<!--							</configuration>-->
+<!--						</execution>-->
 
-						<execution>
-							<id>npm run-script build</id>
-							<goals>
-								<goal>npm</goal>
-							</goals>
-							<configuration>
-								<arguments>run-script build</arguments>
-							</configuration>
-						</execution>
-					</executions>
-					<configuration>
-						<installDirectory>target</installDirectory>
-						<workingDirectory>${project.basedir}/src/main/frontend/</workingDirectory>
-					</configuration>
-				</plugin>
+<!--						<execution>-->
+<!--							<id>npm run-script build</id>-->
+<!--							<goals>-->
+<!--								<goal>npm</goal>-->
+<!--							</goals>-->
+<!--							<configuration>-->
+<!--								<arguments>run-script build</arguments>-->
+<!--							</configuration>-->
+<!--						</execution>-->
+<!--					</executions>-->
+<!--					<configuration>-->
+<!--						<installDirectory>target</installDirectory>-->
+<!--						<workingDirectory>${project.basedir}/src/main/frontend/</workingDirectory>-->
+<!--					</configuration>-->
+<!--				</plugin>-->
 		</plugins>
 	</build>
 

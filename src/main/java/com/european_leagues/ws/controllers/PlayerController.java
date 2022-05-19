@@ -46,4 +46,9 @@ public class PlayerController implements PlayerApi {
         final PlayerDto response = this.playerService.save(playerDto);
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
+    @Override
+    public ResponseEntity<List<PlayerDto>> searchPlayerByName(String playerName){
+        final List<PlayerDto> response = this.playerService.searchPlayer(playerName);
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
 }

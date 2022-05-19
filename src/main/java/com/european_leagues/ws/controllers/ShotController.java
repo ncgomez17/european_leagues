@@ -46,4 +46,9 @@ public class ShotController implements ShotApi {
         final ShotDto response = this.shotService.save(shotDto);
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
+    @Override
+    public ResponseEntity<List<ShotDto>> searchShotByPlayerName(String playerName){
+        final List<ShotDto> response = this.shotService.searchShot(playerName);
+        return new ResponseEntity<>(response,HttpStatus.OK);
+    }
 }

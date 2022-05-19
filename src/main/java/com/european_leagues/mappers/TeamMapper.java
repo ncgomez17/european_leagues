@@ -12,13 +12,11 @@ public interface TeamMapper {
     @Mapping(target="name", source="name")
     @Mapping(target="numberOfPlayers", source="numberOfPlayers")
     @Mapping(target="league", source="league")
-    @Mapping(target="players", source="players")
     TeamEntity toTeamEntity(TeamDto dto);
 
     @Mapping(target="id", source="id")
     @Mapping(target="name", source="name")
     @Mapping(target="numberOfPlayers", source="numberOfPlayers")
     @Mapping(target="league", source="league")
-    @Mapping(target="players", source="players")
     TeamDto toTeamDto(TeamEntity entity);
 }

@@ -1,10 +1,12 @@
 package com.european_leagues.model.entities;
 
 import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name="MATCH_LEAGUE")
@@ -17,8 +19,7 @@ public class MatchEntity implements Serializable {
     Integer id;
 
     @Column(name="date_match")
-    @Temporal(TemporalType.TIMESTAMP)
-    Date dateMatch;
+    LocalDate dateMatch;
 
     @Column(name="goals_home_team")
     Integer goalsHomeTeam;
@@ -27,9 +28,11 @@ public class MatchEntity implements Serializable {
     Integer goalsVisitorTeam;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     TeamEntity homeTeam;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     TeamEntity visitorTeam;
 
 
